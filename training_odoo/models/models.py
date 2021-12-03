@@ -21,6 +21,12 @@ class TrainingCourse(models.Model):
         ('nama_kursus_unik', 'UNIQUE(name)', 'Judul kursus harus unik'),
         ('nama_keterangan_cek', 'CHECK(name != description)', 'Judul kursus dan keterangan tidak boleh sama ')
     ]
+    
+    def copy(self, default=None):
+        default = dict(default or {})
+        default.update(name=("%s (copy)") % (self.name or ''))
+        return super(TrainingCourse, self).copy(default)
+    
 class TrainingSession(models.Model):
     _name = 'training.session'
     _description = 'Sesi Training'
