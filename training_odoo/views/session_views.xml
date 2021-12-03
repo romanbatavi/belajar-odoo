@@ -60,30 +60,37 @@
         </field>
     </record>
 
-
-    <record id="training_course_view_activity" model="ir.ui.view">
-        <field name="name">training.course.activity</field>
-        <field name="model">training.course</field>
+    <!-- GRAPH -->
+    <record id="training_session_view_graph" model="ir.ui.view">
+        <field name="name">training.session.graph</field>
+        <field name="model">training.session</field>
         <field name="arch" type="xml">
-            <activity string="Course">
-                <field name="id"/>
-                <templates>
-                    <div t-name="activity-box">
-                        <div>
-                            <field name="name" display="full"/>
-                            <field name="user_id" muted="1" display="full"/>
-                        </div>
-                    </div>
-                </templates>
-            </activity>
+            <graph string="Session" sample="1" stacked="False" type="pie" order="desc">
+                <field name="course_id"/>
+                <field name="partner_id"/>
+                <field name="start_date" interval="week"/>
+                <field name="attendees_count" type="measure"/>
+            </graph>
         </field>
     </record>
 
+    <!-- PIVOT -->
+    <record id="training_session_pivot_view" model="ir.ui.view">
+        <field name="name">training.session.pivot</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <pivot string="Pivot" sample="1" disable_linking="True" display_quantity="true">
+                <field name="start_date" type="row"/>
+                <field name="course_id" type="col"/>
+                <field name="attendees_count" type="measure"/>
+            </pivot>
+        </field>
+    </record>
 
     <record id="training_session_action" model="ir.actions.act_window">
         <field name="name">Session</field>
         <field name="res_model">training.session</field>
-        <field name="view_mode">tree,form,calendar,activity</field>
+        <field name="view_mode">tree,form,calendar,graph,pivot</field>
     </record>
 
     <!-- <menuitem id="menu_item_training_session" name="Session" parent="menu_bar_training_odoo" action="training_session_action"/> -->

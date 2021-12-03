@@ -165,10 +165,31 @@
         </form>
       </field>
     </record> -->
+
+    <!-- ACTIVITY -->
+    <record id="training_course_view_activity" model="ir.ui.view">
+      <field name="name">training.course.activity</field>
+      <field name="model">training.course</field>
+      <field name="arch" type="xml">
+        <activity string="Course">
+          <field name="id"/>
+          <templates>
+            <div t-name="activity-box">
+              <div>
+                <field name="name" display="full"/>
+                <field name="user_id" muted="1" display="full"/>
+              </div>
+            </div>
+          </templates>
+        </activity>
+      </field>
+    </record>
+
+    <!-- ACTION DISINI -->
     <record id="training_course_action" model="ir.actions.act_window">
       <field name="name">Training</field>
       <field name="res_model">training.course</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,form,activity</field>
       <!-- <field name="domain">[]</field>
       <field name="context">{}</field> -->
       <field name="help" type="html">
