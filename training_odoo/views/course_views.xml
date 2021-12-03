@@ -1,6 +1,7 @@
 <odoo>
   <data>
     <!-- TAMPILAN UNTUK FORM -->
+    <!-- TREE -->
     <record id="training_course_view_tree" model="ir.ui.view">
       <field name="name">training.course.tree</field>
       <field name="model">training.course</field>
@@ -13,6 +14,7 @@
         </tree>
       </field>
     </record>
+    <!-- FORM -->
     <record id="training_course_view_form" model="ir.ui.view">
       <field name="name">training.course.form</field>
       <field name="model">training.course</field>
@@ -77,6 +79,25 @@
             <field name="message_ids" widget="mail_thread"/>
           </div>
         </form>
+      </field>
+    </record>
+
+    <!-- VIEW SEARCH -->
+    <record id="training_course_view_search" model="ir.ui.view">
+      <field name="name">training.course.search</field>
+      <field name="model">training.course</field>
+      <field name="arch" type="xml">
+        <search string="Search Course">
+          <field name="name" string="Kursus" filter_domain="['|', ('name', 'ilike', self), ('description', 'ilike', self)]"/>
+          <field name="user_id"/>
+          <filter name="my_courses" string="Kursus Saya" domain="[('user_id', '=', uid)]"/>
+          <group string="Group By">
+            <filter name="responsible" string="Penanggung Jawab" context="{'group_by': 'user_id'}"/>
+          </group>
+          <searchpanel>
+            <field name="level" icon="fa-signal" enable_counters="1"/>
+          </searchpanel>
+        </search>
       </field>
     </record>
     <!-- <record id="training_course_view_tree" model="ir.ui.view">
