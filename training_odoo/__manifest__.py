@@ -26,6 +26,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         'views/sequence_data.xml',
+        'views/scheduler_data.xml',
         'views/course_views.xml',
         'views/partner_views.xml',
         'views/session_views.xml',
