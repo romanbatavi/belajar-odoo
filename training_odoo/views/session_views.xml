@@ -26,7 +26,9 @@
                     <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/>
                     <button name="action_cancel" type="object" string="Cancel" states="open"/>
                     <button name="action_close" type="object" string="Close" states="open" class="oe_highlight"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,open,done"/>
+                    <button name="action_kembali" type="object" string="Back => Draft" states="done" class="oe_highlight"/>
+                    <button name="action_sudah" type="object" string="Sudah => Draft" states="draft" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
                 </header>
                 <sheet>
                     <group>

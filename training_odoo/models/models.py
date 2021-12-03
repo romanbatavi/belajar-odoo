@@ -83,7 +83,7 @@ class TrainingSession(models.Model):
         end_date = fields.Datetime.from_string(sesi.end_date)
         sesi.duration = (end_date - start_date).days + 1
         
-    state = fields.Selection([('draft', 'Draft'), ('open', 'Open'), ('done', 'Done')], string='Status', readonly=True, default='draft')
+    state = fields.Selection([('draft', 'Draft'), ('open', 'Open'), ('done', 'Done'), ('confirm', 'Confirm')], string='Status', readonly=True, default='draft')
     
     def action_confirm(self):
         self.write({'state': 'open'})
@@ -93,6 +93,12 @@ class TrainingSession(models.Model):
       
     def action_close(self):
         self.write({'state': 'done'})
+        
+    def action_kembali(self):
+        self.write({'state': 'draft'})
+        
+    def action_sudah(self):
+        self.write({'state': 'confirm'})
             
     end_date = fields.Date(string="Tanggal Selesai", compute='get_end_date', inverse='set_end_date', store=True, readonly=True, states={'draft': [('readonly', False)]})
     attendees_count = fields.Integer(string="Jumlah Peserta", compute='get_attendees_count', store=True)
@@ -114,7 +120,6 @@ class TrainingSession(models.Model):
     
     color = fields.Integer('Color Index', default=0)
     level = fields.Selection(string='Tingkatan', related='course_id.level')
-    state = fields.Selection([('draft', 'Draft'), ('open', 'Open'), ('done', 'Done')], string='Status', default='draft')
     
 class TrainingAttendee(models.Model):
     _name = 'training.attendee'

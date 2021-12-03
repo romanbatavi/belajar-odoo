@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_training_odoo_training_odoo,training_odoo.training_odoo,model_training_odoo_training_odoo,base.group_user,1,1,1,1
+course_user,course.user,model_training_course,group_training_user,1,1,1,1
+session_user,session.user,model_training_session,group_training_user,1,1,1,1
+attendee_user,attendee.user,model_training_attendee,group_training_user,1,1,1,1
+wizard_user,wizard.user,model_training_wizard,group_training_user,1,1,1,1
