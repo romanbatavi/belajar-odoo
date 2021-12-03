@@ -38,6 +38,9 @@ class TrainingCourse(models.Model):
     color = fields.Integer('Warna', default=get_default_color)
     email = fields.Char(string="Email", related='user_id.login')
     
+    def action_print_course(self):
+        return self.env.ref('training_odoo.report_training_course_action').report_action(self)
+    
 class TrainingSession(models.Model):
     _name = 'training.session'
     _description = 'Sesi Training'
