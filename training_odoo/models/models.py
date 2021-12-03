@@ -17,7 +17,10 @@ class TrainingCourse(models.Model):
     def create(self, vals):
         vals['ref'] = self.env['ir.sequence'].next_by_code('training.course')
         return super(TrainingCourse, self).create(vals)
-    
+    _sql_constraints = [
+        ('nama_kursus_unik', 'UNIQUE(name)', 'Judul kursus harus unik'),
+        ('nama_keterangan_cek', 'CHECK(name != description)', 'Judul kursus dan keterangan tidak boleh sama ')
+    ]
 class TrainingSession(models.Model):
     _name = 'training.session'
     _description = 'Sesi Training'
@@ -32,6 +35,12 @@ class TrainingSession(models.Model):
     def default_partner_id(self):
         instruktur = self.env['res.partner'].search(['|', ('instructor', '=', True), ('category_id.name', 'ilike', 'Pengajar')], limit=1)
         return instruktur
+    
+    @api.constrains('seats', 'attendee_ids')
+    def check_seats_and_attendees(self):
+        for r in self:
+            if r.seats < len(r.attendee_ids): 
+                raise ValidationError("Jumlah peserta melebihi kuota yang disediakan")
     
     course_id = fields.Many2one('training.course', string='Judul Kursus', required=True, ondelete="cascade" )
     name = fields.Char(string='Nama', required=True)

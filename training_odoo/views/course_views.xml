@@ -144,10 +144,6 @@
       </field>
     </record>
 
-    <menuitem id="menu_dashboard_training_odoo" name="Training Odoo" web_icon="training_odoo,static/description/icon.png"/>
-    <menuitem id="menu_bar_training_odoo" name="Training" parent="menu_dashboard_training_odoo" />
-    <menuitem id="menu_item_training_course" name="Course" action="training_course_action" parent="menu_bar_training_odoo" />
-
     <record id="data1" model="training.course">
       <field name="name">Training Course</field>
       <field name="description">Deskripsi</field>
