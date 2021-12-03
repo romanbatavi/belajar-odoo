@@ -31,6 +31,7 @@
         'views/session_views.xml',
         'views/attende_views.xml',
         'views/menuitem_views.xml',
+        'wizard/training_wizard_views.xml',
         'views/templates.xml',
     ],
     # only loaded in demonstration mode
