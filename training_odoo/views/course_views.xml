@@ -1,0 +1,104 @@
+<odoo>
+  <data>
+    <!-- TAMPILAN UNTUK FORM -->
+    <record id="training_course_view_tree" model="ir.ui.view">
+      <field name="name">training.course.view.tree</field>
+      <field name="model">training.course</field>
+      <field name="arch" type="xml">
+        <tree string="Course">
+          <field name="name" />
+          <field name="user_id" />
+          <field name="description" />
+          <field name="addictional" />
+          <field name="session_line" />
+        </tree>
+      </field>
+    </record>
+    <!-- TAMPILAN UNTUK ISIAN -->
+    <record id="training_course_view_form" model="ir.ui.view">
+      <field name="name">training.course.view.form</field>
+      <field name="model">training.course</field>
+      <field name="arch" type="xml">
+        <form string="">
+          <sheet>
+            <group>
+              <field name="name" />
+              <field name="user_id" />
+            </group>
+            <notebook>
+              <!-- PAGE SESI -->
+              <page string="Sesi">
+                <group>
+                  <field name="session_line" mode="tree,kanban" nolabel="1">
+                    <tree string="Sesi" editable="top">
+                      <field name="name"/>
+                      <field name="partner_id"/>
+                      <field name="start_date"/>
+                      <field name="duration"/>
+                      <field name="seats"/>
+                    </tree>
+                    <form string='Sesi'>
+                      <group>
+                        <field name="name"/>
+                        <field name="partner_id"/>
+                        <field name="start_date"/>
+                        <field name="duration"/>
+                        <field name="seats"/>
+                      </group>
+                    </form>
+                  </field>
+                </group>
+              </page>
+              <!-- PAGE KETERANGAN -->
+              <page name="name" string="Keterangan">
+                <field name="description" placeholder="mohon isi keterangan dengan benar"/>
+              </page>
+              <!-- PAGE PRODUCT_IDS MANY2MANY -->
+              <page name="product_ids" string="Cendera Mata">
+                <field name="product_ids" />
+              </page>
+              <!-- PAGE ADDICTIONAL -->
+              <page name="name" string="Addictional">
+                <field name="addictional" />
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+    <record id="training_course_action" model="ir.actions.act_window">
+      <field name="name">Training</field>
+      <field name="res_model">training.course</field>
+      <field name="view_mode">tree,form</field>
+      <!-- <field name="domain">[]</field>
+      <field name="context">{}</field> -->
+      <field name="help" type="html">
+        <p class="a view nocontent smiling face">
+        BUATLAH KURSUS PERTAMAMU
+        </p>
+      </field>
+    </record>
+
+    <menuitem id="menu_dashboard_training_odoo" name="Training Odoo" web_icon="training_odoo,static/description/icon.png"/>
+    <menuitem id="menu_bar_training_odoo" name="Training" parent="menu_dashboard_training_odoo" />
+    <menuitem id="menu_item_training_course" name="Course" action="training_course_action" parent="menu_bar_training_odoo" />
+
+    <record id="data1" model="training.course">
+      <field name="name">Training Course</field>
+      <field name="description">Deskripsi</field>
+    </record>
+    <record id="data_demo_course_1" model="training.course">
+      <field name="name">Technical</field>
+      <field name="description">Training technical memiliki tujuan agar user dapat membuat dan mengcustom modul ketika implementasi</field>
+    </record>
+    <record id="data_demo_course_2" model="training.course">
+      <field name="name">Functional</field>
+      <field name="description">Training technical memiliki tujuan agar user dapat mengoperasikan sistem seacara baik dan benar</field>
+    </record>
+    <record id="data_demo_course_3" model="training.course">
+      <field name="name">Python</field>
+      <!-- tidak ada tambahan description -->
+    </record>
+
+  </data>
+</odoo>

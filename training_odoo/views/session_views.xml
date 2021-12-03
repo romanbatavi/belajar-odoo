@@ -1,0 +1,55 @@
+<odoo>
+    <record id="training_session_view_tree" model="ir.ui.view">
+        <field name="name">training.session.tree</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <tree string="session List">
+                <field name="course_id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="start_date"/>
+                <field name="duration"/>
+                <field name="seats"/>
+                <field name="taken_seats" widget="progressbar"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="training_session_view_form" model="ir.ui.view">
+        <field name="name">training.session.form</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <form string="Session Form">
+                <sheet>
+                    <group>
+                        <group string="Informasi">
+                            <field name="course_id"/>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group string="Jadwal">
+                            <field name="start_date"/>
+                            <field name="duration"/>
+                            <field name="seats"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="taken_seats" widget="progressbar"/>
+                    </group>
+                    <group string="Peserta">
+                        <field name="attendee_ids" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="training_session_action" model="ir.actions.act_window">
+        <field name="name">Session</field>
+        <field name="res_model">training.session</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <!-- <menuitem id="menu_item_training_session" name="Session" parent="menu_bar_training_odoo" action="training_session_action"/> -->
+</odoo>

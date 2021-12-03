@@ -1,0 +1,45 @@
+<odoo>
+    <record id="training_instructor_action" model="ir.actions.act_window">
+        <field name="name">Instructor</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">['|', ('instructor', '=', True), ('category_id.name', 'ilike', 'Pengajar')]</field>
+        <field name="context">{'default_instructor': True}</field>
+    </record>
+
+    <!-- Membuat Data Dummy Tags -->
+    <record id="data_demo_pengajar_1" model="res.partner.category">
+        <field name="name">Pengajar / Basic</field>
+    </record>
+
+    <record id="data_demo_pengajar_2" model="res.partner.category">
+        <field name="name">Pengajar / Advanced</field>
+    </record>
+
+    <!-- <record id="instruktur_res_partner_view_form" model="ir.ui.view">
+        <field name="name">instruktur.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Sessions">
+                    <group>
+                        <field name="instructor"/>
+                        <field name="session_line" attrs="{'invisible': [('instructor', '=', False)]}"/>
+                    </group>
+                </page>
+            </notebook>
+        </field>
+    </record>
+
+    <record id="training_instructor_action" model="ir.actions.act_window">
+        <field name="name">Instructor</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('instructor', '=', True)]</field>
+        <field name="context">{'default_instructor': True}</field>
+    </record> -->
+
+    <!-- <menuitem id="menu_bar_configuration" name="Configuration" parent="menu_dashboard_training_odoo"/> -->
+    <!-- <menuitem id="menu_item_training_instructor" name="Instructor" parent="menu_bar_configuration" action="training_instructor_action"/> -->
+</odoo>
