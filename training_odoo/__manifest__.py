@@ -26,6 +26,8 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'report/report_action.xml',
+        'report/report_training_session.xml',
         'views/sequence_data.xml',
         'views/scheduler_data.xml',
         'views/course_views.xml',
