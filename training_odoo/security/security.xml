@@ -15,5 +15,19 @@
             <field name="implied_ids" eval="[(4, ref('group_training_user'))]"/>
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
+
+        <record id="training_course_own_rule" model="ir.rule">
+            <field name="name">Own Course</field>
+            <field name="model_id" ref="model_training_course"/>
+            <field name="domain_force">['|', ('user_id','=',user.id), ('user_id','=',False)]</field>
+            <field name="groups" eval="[(4, ref('group_training_user'))]"/>
+        </record>
+
+        <record id="training_course_all_rule" model="ir.rule">
+            <field name="name">All Course</field>
+            <field name="model_id" ref="model_training_course"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('group_training_manager'))]"/>
+        </record>
     </data>
 </odoo>

@@ -121,6 +121,10 @@ class TrainingSession(models.Model):
     color = fields.Integer('Color Index', default=0)
     level = fields.Selection(string='Tingkatan', related='course_id.level')
     
+    def action_print_session(self):
+        return self.env.ref('training_odoo.report_training_session_action').report_action(self)   
+
+    
 class TrainingAttendee(models.Model):
     _name = 'training.attendee'
     _description = 'Training Peserta'
