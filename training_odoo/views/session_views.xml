@@ -47,11 +47,12 @@
         </field>
     </record>
 
+    <!-- CALENDAR -->
     <record id="training_session_view_form_calendar" model="ir.ui.view">
         <field name="name">training.session.calendar</field>
         <field name="model">training.session</field>
         <field name="arch" type="xml">
-            <calendar string="Session Calendar" date_start="start_date" date_stop="end_date" mode="month" color="partner_id" quick_add="False" event_open_popup="True">
+            <calendar string="Session Calendar" date_start="start_date" date_stop="end_date" mode="month" color="id" quick_add="False" event_open_popup="True">
                 <field name="name" invisible="1"/>
                 <field name="partner_id" filters="1"/>
                 <field name="course_id" filters="1" color="color"/>
@@ -59,10 +60,30 @@
         </field>
     </record>
 
+
+    <record id="training_course_view_activity" model="ir.ui.view">
+        <field name="name">training.course.activity</field>
+        <field name="model">training.course</field>
+        <field name="arch" type="xml">
+            <activity string="Course">
+                <field name="id"/>
+                <templates>
+                    <div t-name="activity-box">
+                        <div>
+                            <field name="name" display="full"/>
+                            <field name="user_id" muted="1" display="full"/>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
+
     <record id="training_session_action" model="ir.actions.act_window">
         <field name="name">Session</field>
         <field name="res_model">training.session</field>
-        <field name="view_mode">tree,form,calendar</field>
+        <field name="view_mode">tree,form,calendar,activity</field>
     </record>
 
     <!-- <menuitem id="menu_item_training_session" name="Session" parent="menu_bar_training_odoo" action="training_session_action"/> -->
