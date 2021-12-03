@@ -63,7 +63,33 @@ class TrainingSession(models.Model):
     def verify_valid_duration(self):
         if self.duration <= 0:
             self.duration = 1
-        return {'warning': {'title': 'Perhatian', 'message': 'Durasi Hari Training Tidak Boleh 0 atau Negatif'}}
+            return {'warning': {'title': 'Perhatian', 'message': 'Durasi Hari Training Tidak Boleh 0 atau Negatif'}}
+    
+    @api.depends('start_date', 'duration')
+    def get_end_date(self):
+        for sesi in self:
+            if not sesi.start_date: 
+                sesi.end_date = sesi.start_date
+                continue
+            start = fields.Date.from_string(sesi.start_date)
+            sesi.end_date = start + timedelta(days=sesi.duration)
+            
+    def set_end_date(self):
+        for sesi in self:
+            if not (sesi.start_date and sesi.end_date):
+                continue
+             
+        start_date = fields.Datetime.from_string(sesi.start_date)
+        end_date = fields.Datetime.from_string(sesi.end_date)
+        sesi.duration = (end_date - start_date).days + 1
+            
+    end_date = fields.Date(string="Tanggal Selesai", compute='get_end_date', inverse='set_end_date', store=True)
+    attendees_count = fields.Integer(string="Jumlah Peserta", compute='get_attendees_count', store=True)
+  
+    @api.depends('attendee_ids')
+    def get_attendees_count(self):
+        for sesi in self:
+            sesi.attendees_count = len(sesi.attendee_ids)
 
     
     course_id = fields.Many2one('training.course', string='Judul Kursus', required=True, ondelete="cascade" )
