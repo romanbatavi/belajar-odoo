@@ -1,22 +1,29 @@
 from odoo.exceptions import ValidationError
 from odoo import _, api, fields, models
+from random import randint
+from datetime import timedelta, datetime, date
 
 class TrainingCourse(models.Model):
     _name = 'training.course'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Training Course'
     
-    name = fields.Char(string='Judul', required=True)
-    description = fields.Text(string='Keterangan',)
+    name = fields.Char(string='Judul', required=True, tracking=True)
+    description = fields.Text(string='Keterangan', tracking=True)
+    user_id = fields.Many2one('res.users', string="Penanggung Jawab", tracking=True)
     addictional = fields.Text(string='Addictional',)
-    user_id = fields.Many2one('res.users', string="Penanggung Jawab")
-    session_line = fields.One2many('training.session', 'course_id', string='Sesi')
-    product_ids = fields.Many2many('product.product', 'course_product_rel', 'course_id', 'product_id', string="Cendera Mata")
+    session_line = fields.One2many('training.session', 'course_id', string='Sesi', tracking=True)
+    product_ids = fields.Many2many('product.product', 'course_product_rel', 'course_id', 'product_id', 'Cendera Mata', tracking=True)
     ref = fields.Char(string='Referensi', readonly=True, default='/')
+    
+    def get_default_color(self):
+        return randint(1, 11)
  
     @api.model
     def create(self, vals):
         vals['ref'] = self.env['ir.sequence'].next_by_code('training.course')
         return super(TrainingCourse, self).create(vals)
+    
     _sql_constraints = [
         ('nama_kursus_unik', 'UNIQUE(name)', 'Judul kursus harus unik'),
         ('nama_keterangan_cek', 'CHECK(name != description)', 'Judul kursus dan keterangan tidak boleh sama ')
@@ -26,6 +33,10 @@ class TrainingCourse(models.Model):
         default = dict(default or {})
         default.update(name=("%s (copy)") % (self.name or ''))
         return super(TrainingCourse, self).copy(default)
+    
+    level = fields.Selection([('basic', 'Dasar'), ('advanced', 'Lanjutan')], string='Tingkatan', default='basic')
+    color = fields.Integer('Warna', default=get_default_color)
+    email = fields.Char(string="Email", related='user_id.login')
     
 class TrainingSession(models.Model):
     _name = 'training.session'
@@ -47,6 +58,13 @@ class TrainingSession(models.Model):
         for r in self:
             if r.seats < len(r.attendee_ids): 
                 raise ValidationError("Jumlah peserta melebihi kuota yang disediakan")
+            
+    @api.onchange('duration')
+    def verify_valid_duration(self):
+        if self.duration <= 0:
+            self.duration = 1
+        return {'warning': {'title': 'Perhatian', 'message': 'Durasi Hari Training Tidak Boleh 0 atau Negatif'}}
+
     
     course_id = fields.Many2one('training.course', string='Judul Kursus', required=True, ondelete="cascade" )
     name = fields.Char(string='Nama', required=True)
