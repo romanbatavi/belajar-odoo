@@ -1,3 +1,4 @@
+from odoo.exceptions import ValidationError
 from odoo import _, api, fields, models
 
 class TrainingCourse(models.Model):
@@ -10,6 +11,12 @@ class TrainingCourse(models.Model):
     user_id = fields.Many2one('res.users', string="Penanggung Jawab")
     session_line = fields.One2many('training.session', 'course_id', string='Sesi')
     product_ids = fields.Many2many('product.product', 'course_product_rel', 'course_id', 'product_id', string="Cendera Mata")
+    ref = fields.Char(string='Referensi', readonly=True, default='/')
+ 
+    @api.model
+    def create(self, vals):
+        vals['ref'] = self.env['ir.sequence'].next_by_code('training.course')
+        return super(TrainingCourse, self).create(vals)
     
 class TrainingSession(models.Model):
     _name = 'training.session'

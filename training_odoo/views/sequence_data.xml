@@ -1,0 +1,11 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Sequences Training Course -->
+        <record id="seq_sale_order" model="ir.sequence">
+            <field name="name">Training Course</field>
+            <field name="code">training.course</field>
+            <field name="prefix">TC/%(year)s/%(month)s/</field>
+            <field name="padding">3</field>
+        </record>
+    </data>
+</odoo>
