@@ -87,10 +87,82 @@
         </field>
     </record>
 
+    <!-- KANBAN -->
+    <record id="training_session_kanban_view" model="ir.ui.view">
+        <field name="name">training.session.kanban</field>
+        <field name="model">training.session</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="course_id" class="o_kanban_mobile" sample="1">
+                <field name="course_id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="duration"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="level"/>
+                <field name="color"/>
+                <field name="state"/>
+                <field name="attendees_count"/>
+                <progressbar field="state" colors='{"open": "success", "open": "warning", "draft": "danger"}' sum_field="attendees_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_card oe_kanban_global_click">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button" data-toggle="dropdown" data-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v"/>
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <t t-if="widget.editable">
+                                        <a role="menuitem" type="edit" class="dropdown-item">Edit</a>
+                                    </t>
+                                    <t t-if="widget.deletable">
+                                        <a role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                                    </t>
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong class="o_kanban_record_title">
+                                    <t t-if="record.name.raw_value">
+                                        <field name="name"/>
+                                    </t>
+                                </strong>
+                                <ul>
+                                    <li>
+                                        <t t-if="record.partner_id.raw_value">
+                                            <field name="partner_id"/>
+                                        </t>
+                                    </li>
+                                    <li>
+                                        <t t-if="record.duration.raw_value">
+                                            <field name="duration"/>
+                                        </t>
+                                    </li>
+                                </ul>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left text-muted">
+                                        <span>
+                                            <t t-esc="record.start_date.value"/>
+                                s/d
+                                            <t t-esc="record.end_date.value"/>
+                                        </span>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="level" widget="label_selection" options="{'classes': {'basic': 'warning', 'advanced': 'success'}}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="training_session_action" model="ir.actions.act_window">
         <field name="name">Session</field>
         <field name="res_model">training.session</field>
-        <field name="view_mode">tree,form,calendar,graph,pivot</field>
+        <field name="view_mode">tree,form,calendar,graph,pivot,kanban</field>
     </record>
 
     <!-- <menuitem id="menu_item_training_session" name="Session" parent="menu_bar_training_odoo" action="training_session_action"/> -->

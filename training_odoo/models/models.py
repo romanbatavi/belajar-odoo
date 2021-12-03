@@ -101,6 +101,10 @@ class TrainingSession(models.Model):
     attendee_ids = fields.Many2many('training.attendee', 'session_attendee_rel', 'session_id', 'attendee_id', 'Peserta')
     taken_seats = fields.Float(string="Kursi Terisi", compute='compute_taken_seats')
     
+    color = fields.Integer('Color Index', default=0)
+    level = fields.Selection(string='Tingkatan', related='course_id.level')
+    state = fields.Selection([('draft', 'Draft'), ('open', 'Open'), ('done', 'Done')], string='Status', default='draft')
+    
 class TrainingAttendee(models.Model):
     _name = 'training.attendee'
     _description = 'Training Peserta'
