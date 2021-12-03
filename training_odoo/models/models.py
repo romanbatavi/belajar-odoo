@@ -82,8 +82,19 @@ class TrainingSession(models.Model):
         start_date = fields.Datetime.from_string(sesi.start_date)
         end_date = fields.Datetime.from_string(sesi.end_date)
         sesi.duration = (end_date - start_date).days + 1
+        
+    state = fields.Selection([('draft', 'Draft'), ('open', 'Open'), ('done', 'Done')], string='Status', readonly=True, default='draft')
+    
+    def action_confirm(self):
+        self.write({'state': 'open'})
+      
+    def action_cancel(self):
+        self.write({'state': 'draft'})
+      
+    def action_close(self):
+        self.write({'state': 'done'})
             
-    end_date = fields.Date(string="Tanggal Selesai", compute='get_end_date', inverse='set_end_date', store=True)
+    end_date = fields.Date(string="Tanggal Selesai", compute='get_end_date', inverse='set_end_date', store=True, readonly=True, states={'draft': [('readonly', False)]})
     attendees_count = fields.Integer(string="Jumlah Peserta", compute='get_attendees_count', store=True)
   
     @api.depends('attendee_ids')
@@ -92,13 +103,13 @@ class TrainingSession(models.Model):
             sesi.attendees_count = len(sesi.attendee_ids)
 
     
-    course_id = fields.Many2one('training.course', string='Judul Kursus', required=True, ondelete="cascade" )
-    name = fields.Char(string='Nama', required=True)
-    start_date = fields.Date(string='Tanggal', default=fields.Date.context_today)
-    duration = fields.Float(string='Durasi', help='Jumlah Hari Training', default=3)
-    seats = fields.Integer(string='Kursi', help='Jumlah Kuota Kursi', default=10)
-    partner_id = fields.Many2one('res.partner', string='Instruktur', domain=['|', ('instructor', '=', True), ('category_id.name', 'ilike', 'Pengajar')], default=default_partner_id)
-    attendee_ids = fields.Many2many('training.attendee', 'session_attendee_rel', 'session_id', 'attendee_id', 'Peserta')
+    course_id = fields.Many2one('training.course', string='Judul Kursus', required=True, ondelete='cascade', readonly=True, states={'draft': [('readonly', False)]})
+    name = fields.Char(string='Nama', required=True, readonly=True, states={'draft': [('readonly', False)]})
+    start_date = fields.Date(string='Tanggal', default=fields.Date.context_today, readonly=True, states={'draft': [('readonly', False)]})
+    duration = fields.Float(string='Durasi', help='Jumlah Hari Training', default=3, readonly=True, states={'draft': [('readonly', False)]})
+    seats = fields.Integer(string='Kursi', help='Jumlah Kuota Kursi', default=10, readonly=True, states={'draft': [('readonly', False)]})
+    partner_id = fields.Many2one('res.partner', string='Instruktur', domain=['|', ('instructor', '=', True), ('category_id.name', 'ilike', 'Pengajar')], default=default_partner_id, readonly=True, states={'draft': [('readonly', False)]})
+    attendee_ids = fields.Many2many('training.attendee', 'session_attendee_rel', 'session_id', 'attendee_id', 'Peserta', readonly=True, states={'draft': [('readonly', False)]})
     taken_seats = fields.Float(string="Kursi Terisi", compute='compute_taken_seats')
     
     color = fields.Integer('Color Index', default=0)

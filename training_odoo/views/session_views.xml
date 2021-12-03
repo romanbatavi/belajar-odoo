@@ -12,6 +12,7 @@
                 <field name="duration" avg="Rata-Rata Durasi"/>
                 <field name="seats" sum="Total Kursi"/>
                 <field name="taken_seats" widget="progressbar" optional="hide"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -21,6 +22,12 @@
         <field name="model">training.session</field>
         <field name="arch" type="xml">
             <form string="Session Form">
+                <header>
+                    <button name="action_confirm" type="object" string="Confirm" states="draft" class="btn-primary"/>
+                    <button name="action_cancel" type="object" string="Cancel" states="open"/>
+                    <button name="action_close" type="object" string="Close" states="open" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,done"/>
+                </header>
                 <sheet>
                     <group>
                         <group string="Informasi">

@@ -1,6 +1,5 @@
 <odoo>
   <data>
-    <!-- TAMPILAN UNTUK FORM -->
     <!-- TREE -->
     <record id="training_course_view_tree" model="ir.ui.view">
       <field name="name">training.course.tree</field>
@@ -37,7 +36,6 @@
               <separator string="Login"/>
               <field name="email" password="1"/>
             </group>
-
             <notebook>
               <page string="Sesi">
                 <group>
@@ -48,6 +46,7 @@
                       <field name="start_date"/>
                       <field name="duration"/>
                       <field name="seats"/>
+                      <field name="state"/>
                     </tree>
                     <form string='Sesi'>
                       <group>
@@ -74,9 +73,9 @@
             </notebook>
           </sheet>
           <div class="oe_chatter">
-            <field name="message_follower_ids" widget="mail_followers"/>
-            <field name="activity_ids" widget="mail_activity"/>
-            <field name="message_ids" widget="mail_thread"/>
+            <field name="message_follower_ids"/>
+            <field name="activity_ids"/>
+            <field name="message_ids"/>
           </div>
         </form>
       </field>
