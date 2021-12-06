@@ -27,6 +27,7 @@
         # 'security/ir.model.access.csv',
         'views/home.xml',
         'views/paketproduk.xml',
+        'views/jamaah.xml',
         'views/menuitem_views.xml',
         'views/views.xml',
         'views/templates.xml',

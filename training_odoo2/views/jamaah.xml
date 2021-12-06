@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record id="instruktur_res_partner_view_form" model="ir.ui.view">
+            <field name="name">instruktur.res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <group>
+                    <field name="ktp"/>
+                    <field name="ayah"/>
+                    <field name="ibu"/>
+                </group>
+            </field>
+        </record>
+
+        <record id="jamaah_action" model="ir.actions.act_window">
+            <field name="name">Jamaah</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+    </data>
+</odoo>
