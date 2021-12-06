@@ -20,13 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','stock'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/home.xml',
-        # 'views/umroh_produk.xml',
+        'views/menuitem_views.xml',
         'views/views.xml',
         'views/templates.xml',
         

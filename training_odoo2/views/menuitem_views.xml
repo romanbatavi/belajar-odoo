@@ -1,18 +1,21 @@
 <odoo>
-    <!-- Menu Dashboard -->
-    <menuitem id="menu_dashboard_training_odoo2" name="Training Odoo Travel" web_icon="training_odoo,static/description/icon.png"/>
+    <data>
+        <!-- Membuat Menu Dashboard -->
+        <menuitem id="menu_dashboard_training_odoo2" name="UMROH TRAVEL"/>
 
-    <!-- Menu Bar Training -->
-    <menuitem id="menu_bar_training_odoo2" name="Training Travel" parent="menu_dashboard_training_odoo2"/>
+        <!-- Membuat Menu Bar Training -->
+        <menuitem id="menu_bar_master_data" name="Master Data" parent="menu_dashboard_training_odoo2"/>
+        <menuitem id="menu_bar_master_transaction" name="Transaction" parent="menu_dashboard_training_odoo2"/>
 
-    <!-- Menu Item -->
-    <!-- <menuitem id="menu_item_training_course" name="Course" parent="menu_bar_training_odoo" action="training_course_action"/> -->
-    <!-- <menuitem id="menu_item_training_session" name="Session" parent="menu_bar_training_odoo" action="training_session_action"/> -->
+        <!-- Membuat Menu Item-->
+        <menuitem id="menu_item_produk" name="Produk" parent="menu_bar_master_data" action="produk_action"/>
+        <!-- <menuitem id="menu_item_paket_produk" name="Paket Produk" parent="menu_bar_master_data" action="paket_produk_action"/> -->
+        <!-- <menuitem id="menu_item_umroh_jamaah" name="Jamaah" parent="menu_bar_master_data" action="umroh_travel_action"/> -->
+        <!-- <menuitem id="menu_item_umroh_airlines" name="Airlines" parent="menu_bar_master_data" action="umroh_travel_action"/> -->
+        <!-- <menuitem id="menu_item_umroh_hotels" name="Hotels" parent="menu_bar_master_data" action="umroh_travel_action"/> -->
 
-    <!-- Menu Bar Konfigurasi -->
-    <!-- <menuitem id="menu_bar_configuration" name="Configuration" parent="menu_dashboard_training_odoo"/> -->
-    <!-- Menu Item -->
-    <!-- <menuitem id="menu_item_training_instructor" name="Instructor" parent="menu_bar_configuration" action="training_instructor_action"/>
-    <menuitem id="menu_item_training_attendee" name="Attendee" parent="menu_bar_configuration" action="training_attendee_action"/>
-    <menuitem id="menu_item_instructor_tags" name="Instructor Tags" parent="menu_bar_configuration" action="base.action_partner_category_form"/> -->
+        <!-- <menuitem id="menu_item_umroh_travel_package" name="Travel Package" parent="menu_bar_master_transaction" action="umroh_travel_action"/> -->
+        <!-- <menuitem id="menu_item_umroh_sales_order" name="Sales Order" parent="menu_bar_master_transaction" action="umroh_travel_action"/> -->
+        <!-- <menuitem id="menu_item_umroh_invoice" name="Customers Invoice" parent="menu_bar_master_transaction" action="umroh_travel_action"/> -->
+    </data>
 </odoo>
