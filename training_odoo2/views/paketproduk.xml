@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <record id="paketproduk_action" model="ir.actions.act_window">
+            <field name="name">Paket Produk</field>
+            <field name="res_model">mrp.bom</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
+    </data>
+</odoo>

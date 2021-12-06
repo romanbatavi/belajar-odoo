@@ -9,7 +9,7 @@
 
         <!-- Membuat Menu Item-->
         <menuitem id="menu_item_produk" name="Produk" parent="menu_bar_master_data" action="produk_action"/>
-        <!-- <menuitem id="menu_item_paket_produk" name="Paket Produk" parent="menu_bar_master_data" action="paket_produk_action"/> -->
+        <menuitem id="menu_item_paketproduk" name="Paket Produk" parent="menu_bar_master_data" action="paketproduk_action"/>
         <!-- <menuitem id="menu_item_umroh_jamaah" name="Jamaah" parent="menu_bar_master_data" action="umroh_travel_action"/> -->
         <!-- <menuitem id="menu_item_umroh_airlines" name="Airlines" parent="menu_bar_master_data" action="umroh_travel_action"/> -->
         <!-- <menuitem id="menu_item_umroh_hotels" name="Hotels" parent="menu_bar_master_data" action="umroh_travel_action"/> -->
