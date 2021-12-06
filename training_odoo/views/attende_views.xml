@@ -33,7 +33,6 @@
         </field>
     </record>
 
-
     <!-- Membuat Action/Event Attendee -->
     <record id="training_attendee_action" model="ir.actions.act_window">
         <field name="name">Attendee</field>
