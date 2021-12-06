@@ -28,6 +28,8 @@
         'views/home.xml',
         'views/paketproduk.xml',
         'views/jamaah.xml',
+        'views/airlines.xml',
+        'views/hotels.xml',
         'views/menuitem_views.xml',
         'views/views.xml',
         'views/templates.xml',

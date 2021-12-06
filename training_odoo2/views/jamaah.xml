@@ -1,15 +1,18 @@
 <odoo>
     <data>
-        <record id="instruktur_res_partner_view_form" model="ir.ui.view">
-            <field name="name">instruktur.res.partner.form</field>
+        <record id="jamaah_res_partner_view_form" model="ir.ui.view">
+            <field name="name">jamaah.res.partner.form</field>
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <group>
-                    <field name="ktp"/>
-                    <field name="ayah"/>
-                    <field name="ibu"/>
-                </group>
+                <notebook position="inside">
+                    <page string="Addictional Info">
+                        <group>
+                            <field name="ktp"/>
+                            <field name="ayah"/>
+                        </group>
+                    </page>
+                </notebook>
             </field>
         </record>
 

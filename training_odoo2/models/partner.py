@@ -5,4 +5,3 @@ class Partner(models.Model):
  
     ktp = fields.Char(string='KTP')
     ayah = fields.Char(string='Ayah')
-    ibu = fields.Char(string='Ibu')

@@ -11,8 +11,8 @@
         <menuitem id="menu_item_produk" name="Produk" parent="menu_bar_master_data" action="produk_action"/>
         <menuitem id="menu_item_paketproduk" name="Paket Produk" parent="menu_bar_master_data" action="paketproduk_action"/>
         <menuitem id="menu_item_jamaah" name="Jamaah" parent="menu_bar_master_data" action="jamaah_action"/>
-        <!-- <menuitem id="menu_item_umroh_airlines" name="Airlines" parent="menu_bar_master_data" action="umroh_travel_action"/> -->
-        <!-- <menuitem id="menu_item_umroh_hotels" name="Hotels" parent="menu_bar_master_data" action="umroh_travel_action"/> -->
+        <menuitem id="menu_item_airlines" name="Airlines" parent="menu_bar_master_data" action="airlines_action"/>
+        <menuitem id="menu_item_hotels" name="Hotels" parent="menu_bar_master_data" action="hotels_action"/>
 
         <!-- <menuitem id="menu_item_umroh_travel_package" name="Travel Package" parent="menu_bar_master_transaction" action="umroh_travel_action"/> -->
         <!-- <menuitem id="menu_item_umroh_sales_order" name="Sales Order" parent="menu_bar_master_transaction" action="umroh_travel_action"/> -->
