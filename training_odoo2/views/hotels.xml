@@ -3,6 +3,6 @@
         <field name="name">Hotels</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('pilihan', '=', 'hotel')]</field>
+        <field name="context">{'search_default_pilihan' : "Hotel"}</field>
     </record>
 </odoo>
