@@ -3,6 +3,5 @@
         <field name="name">Airlines</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="domain">[('name', '=', 'airlines')]</field>
     </record>
 </odoo>

@@ -36,7 +36,7 @@
                 </xpath>
                 <xpath expr="//field[@name='category_id']" position="after">
                     <h2 style="margin-top:100px; color:primary"></h2>
-                    <field name="jenis_kelamin"/>
+                    <field name="jenis_kelamin" widget="radio" options="{'horizontal' : true}"/>
                     <field name="ibu"/>
                     <field name="pekerjaan_ibu"/>
                     <field name="tanggal_lahir"/>
@@ -63,6 +63,9 @@
                     <h2 style="margin-top:200px;"></h2>
                     <field name="gambar_bknikah" widget="image"/>
                     <field name="gambar_kk" widget="image"/>
+                </xpath>
+                <xpath expr="//field[@name='property_stock_supplier']" position="after">
+                    <field name="pilihan" widget="radio" options="{'horizontal' : true}"/>
                 </xpath>
             </field>
         </record>

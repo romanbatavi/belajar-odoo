@@ -56,5 +56,10 @@ class Partner(models.Model):
     # SCAN DOCUMENT
     gambar_pass = fields.Image(string="Scan Passpor")
     gambar_ktp = fields.Image(string="Scan KTP")
-    gambar_bknikah = fields.Image(string="Buku Nikah")
-    gambar_kk = fields.Image(string="Kartu Keluarga")
+    gambar_bknikah = fields.Image(string="Scan Buku Nikah")
+    gambar_kk = fields.Image(string="Scan Kartu Keluarga")
+    
+    pilihan = fields.Selection([
+        ('hotel', 'Hotel'),
+        ('airlines', 'Airlines')],
+        string='Travel', help='Travel')
