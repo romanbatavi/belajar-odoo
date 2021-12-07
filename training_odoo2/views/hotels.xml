@@ -1,7 +1,8 @@
 <odoo>
     <record id="hotels_action" model="ir.actions.act_window">
-        <field name="name">Jamaah</field>
+        <field name="name">Hotels</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">kanban,tree,form</field>
+        <field name="domain">[('name', '=', 'hotels')]</field>
     </record>
 </odoo>
