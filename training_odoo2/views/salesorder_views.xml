@@ -1,10 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
         <record id="sales_order_action" model="ir.actions.act_window">
-            <field name="name">Sales Order/field>
-                <field name="res_model">res.partner</field>
-                <field name="view_mode">kanban,tree,form</field>
-            </field>
+            <field name="name">Sales Order</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
         </record>
     </data>
 </odoo>

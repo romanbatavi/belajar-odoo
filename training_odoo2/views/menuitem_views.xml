@@ -16,6 +16,6 @@
 
         <menuitem id="menu_item_travelpackage" name="Travel Package" parent="menu_bar_master_transaction" action="travel_package_action"/>
         <menuitem id="menu_item_salesorder" name="Sales Order" parent="menu_bar_master_transaction" action="sales_order_action"/>
-        <menuitem id="menu_item_customersinvoice" name="Customers Invoice" parent="menu_bar_master_transaction" action="customers_invoice_action"/>
+        <menuitem id="menu_item_customersinvoice" name="Customers Invoice" parent="menu_bar_master_transaction" action="customers_invoce_action"/>
     </data>
 </odoo>
