@@ -44,6 +44,11 @@
                     <field name="gambar_bknikah" widget="image"/>
                     <field name="gambar_kk" widget="image"/>
                 </xpath>
+                <xpath expr="//field[@name='property_stock_supplier']" position="after">
+                    <h2 style="margin-top:80px;">Travel</h2>
+                    <field name="airlines" attrs="{'readonly': [('airlines', '=', True)]}"/>
+                    <field name="hotels" attrs="{'readonly': [('hotels', '=', True)]}"/>
+                </xpath>
             </field>
         </record>
 

@@ -6,9 +6,9 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='property_stock_supplier']" position="after">
-                    <h2 style="margin-top:80px;">Travel</h2>
-                    <field name="airlines" attrs="{'readonly': [('airlines', '=', True)]}"/>
-                    <field name="hotels" attrs="{'readonly': [('hotels', '=', True)]}"/>
+                    <!-- <h2 style="margin-top:80px;">Travel</h2> -->
+                    <!-- <field name="airlines" attrs="{'readonly': [('airlines', '=', True)]}"/> -->
+                    <!-- <field name="hotels" attrs="{'readonly': [('hotels', '=', True)]}"/> -->
                 </xpath>
             </field>
         </record>
@@ -29,7 +29,7 @@
             <field name="name">Airlines</field>
             <field name="res_model">res.partner</field>
             <field name="view_mode">kanban,tree,form</field>
-            <field name="context">{'search_default_airlines':1}</field>
+            <field name="context">{'search_default_airlines':1, 'default_airlines':1}</field>
         </record>
     </data>
 </odoo>
