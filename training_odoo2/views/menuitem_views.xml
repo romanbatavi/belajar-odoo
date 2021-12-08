@@ -14,8 +14,8 @@
         <menuitem id="menu_item_airlines" name="Airlines" parent="menu_bar_master_data" action="airlines_action"/>
         <menuitem id="menu_item_hotels" name="Hotels" parent="menu_bar_master_data" action="hotels_action"/>
 
-        <!-- <menuitem id="menu_item_umroh_travel_package" name="Travel Package" parent="menu_bar_master_transaction" action="umroh_travel_action"/> -->
-        <!-- <menuitem id="menu_item_umroh_sales_order" name="Sales Order" parent="menu_bar_master_transaction" action="umroh_travel_action"/> -->
-        <!-- <menuitem id="menu_item_umroh_invoice" name="Customers Invoice" parent="menu_bar_master_transaction" action="umroh_travel_action"/> -->
+        <menuitem id="menu_item_travelpackage" name="Travel Package" parent="menu_bar_master_transaction" action="travel_package_action"/>
+        <menuitem id="menu_item_salesorder" name="Sales Order" parent="menu_bar_master_transaction" action="sales_order_action"/>
+        <menuitem id="menu_item_customersinvoice" name="Customers Invoice" parent="menu_bar_master_transaction" action="customers_invoice_action"/>
     </data>
 </odoo>

@@ -25,11 +25,13 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/home.xml',
-        'views/paketproduk.xml',
-        'views/jamaah.xml',
-        'views/airlines.xml',
-        'views/hotels.xml',
+        'views/produk_views.xml',
+        'views/paketproduk_views.xml',
+        'views/jamaah_views.xml',
+        'views/airlines_views.xml',
+        'views/hotels_views.xml',
+        'views/travel_package.xml',
+        'views/customerinvoice_views.xml',
         'views/menuitem_views.xml',
         'views/views.xml',
         'views/templates.xml',

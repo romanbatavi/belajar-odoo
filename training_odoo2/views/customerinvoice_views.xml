@@ -1,0 +1,9 @@
+<odoo>
+    <data>
+        <record id="customers_invoice_action" model="ir.actions.act_window">
+            <field name="name">Sales Order/field>
+                <field name="res_model">res.partner</field>
+                <field name="view_mode">kanban,tree,form</field>
+            </record>
+        </data>
+    </odoo>
