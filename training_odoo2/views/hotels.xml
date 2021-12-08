@@ -1,8 +1,42 @@
 <odoo>
-    <record id="hotels_action" model="ir.actions.act_window">
+    <odoo>
+        <data>
+            <record id="airlines_res_partner_view_form" model="ir.ui.view">
+                <field name="name">airlines.res.partner.form</field>
+                <field name="model">res.partner</field>
+                <field name="inherit_id" ref="base.view_partner_form"/>
+                <field name="arch" type="xml">
+                    <xpath expr="//field[@name='property_stock_supplier']" position="after">
+                        <h2 style="margin-top:80px;">Travel</h2>
+                        <field name="airlines" attrs="{'readonly': [('airlines', '=', True)]}"/>
+                        <field name="hotels" attrs="{'readonly': [('hotels', '=', True)]}"/>
+                    </xpath>
+                </field>
+            </record>
+
+            <!-- SUMBER ERROR -->
+            <record id="airlines_res_patner_view_search" model="ir.ui.view">
+                <field name="name">airlines.res.partner.view.search</field>
+                <field name="model">res.partner</field>
+                <field name="inherit_id" ref="base.view_res_partner_filter"/>
+                <field name="arch" type="xml">
+                    <filter name="type_person" position="before">
+                        <filter name="airlines" string="Airlines" domain="[('airlines', '=', True)]" context="{'filters': 'airlines'}" />
+                    </filter>
+                </field>
+            </record>
+
+            <record id="airlines_action" model="ir.actions.act_window">
+                <field name="name">Airlines</field>
+                <field name="res_model">res.partner</field>
+                <field name="view_mode">kanban,tree,form</field>
+                <field name="context">{'search_default_airlines':1}</field>
+            </record>
+        </data>
+    </odoo>
+    <!-- <record id="hotels_action" model="ir.actions.act_window">
         <field name="name">Hotels</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="context">{'search_default_pilihan' : "Hotel"}</field>
-    </record>
+    </record> -->
 </odoo>
