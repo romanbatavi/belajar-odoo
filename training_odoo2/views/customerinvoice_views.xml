@@ -4,6 +4,7 @@
             <field name="name">Sales Order/field>
                 <field name="res_model">res.partner</field>
                 <field name="view_mode">kanban,tree,form</field>
-            </record>
-        </data>
-    </odoo>
+            </field>
+        </record>
+    </data>
+</odoo>

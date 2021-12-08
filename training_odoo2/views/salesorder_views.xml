@@ -2,8 +2,9 @@
     <data>
         <record id="sales_order_action" model="ir.actions.act_window">
             <field name="name">Sales Order/field>
-            <field name="res_model">res.partner</field>
-            <field name="view_mode">kanban,tree,form</field>
+                <field name="res_model">res.partner</field>
+                <field name="view_mode">kanban,tree,form</field>
+            </field>
         </record>
     </data>
 </odoo>
