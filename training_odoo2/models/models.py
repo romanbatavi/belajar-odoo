@@ -16,6 +16,7 @@ class TravelPackage(models.Model):
     _name = 'travel.package'
     _description = 'Travel Package'
     
-    name = fields.Char(string='Judul', required=True)
-    description = fields.Text(string='Keterangan')
+    tanggal_berangkat = fields.Date(string="Tanggal Berangkat")
+    tanggal_kembali = fields.Date(string="Tanggal Kembali")
+    sale = fields.Many2one('product_id', string="Produk", tracking=True)
 
