@@ -14,6 +14,7 @@
 --> belum ada function untuk kondisi state
 --> relate jenis kelamin
 --> total cost belum compute dan belum visible
+--> compute masih error
 
 
 
