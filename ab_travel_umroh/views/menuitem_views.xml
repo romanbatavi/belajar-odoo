@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <!-- Membuat Menu Dashboard -->
+        <menuitem id="menu_dashboard_ab_travel_umroh" name="Travel Umroh" web_icon="ab_travel_umroh,static/description/icon.png"/>
+
+        <!-- Membuat Menu Bar Training -->
+        <menuitem id="menu_bar_master_data" name="Master Data" parent="menu_dashboard_ab_travel_umroh"/>
+        <menuitem id="menu_bar_master_transaction" name="Transaction" parent="menu_dashboard_ab_travel_umroh"/>
+
+        <!-- Membuat Menu Item-->
+        <menuitem id="menu_item_produk" name="Produk" parent="menu_bar_master_data" action="produk_action"/>
+        <menuitem id="menu_item_paketproduk" name="Paket Produk" parent="menu_bar_master_data" action="paketproduk_action"/>
+        <menuitem id="menu_item_jamaah" name="Jamaah" parent="menu_bar_master_data" action="jamaah_action"/>
+        <menuitem id="menu_item_airlines" name="Airlines" parent="menu_bar_master_data" action="airlines_action"/>
+        <menuitem id="menu_item_hotels" name="Hotels" parent="menu_bar_master_data" action="hotels_action"/>
+
+        <menuitem id="menu_item_travelpackage" name="Travel Package" parent="menu_bar_master_transaction" action="travel_package_action"/>
+        <menuitem id="menu_item_salesorder" name="Sales Order" parent="menu_bar_master_transaction" action="sales_order_action"/>
+        <menuitem id="menu_item_customersinvoice" name="Customers Invoice" parent="menu_bar_master_transaction" action="customers_invoce_action"/>
+    </data>
+</odoo>

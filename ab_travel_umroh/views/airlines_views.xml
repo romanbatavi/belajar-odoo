@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+        <!-- AIRLINES FILTER -->
+        <record id="airlines_res_patner_view_search" model="ir.ui.view">
+            <field name="name">airlines.res.partner.view.search</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <filter name="type_person" position="before">
+                    <filter name="airlines" string="Airlines"/>
+                </filter>
+            </field>
+        </record>
+
+        <record id="airlines_action" model="ir.actions.act_window">
+            <field name="name">Airlines</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[('airlines', '=', True)]</field>
+            <field name="context">{'search_default_airlines':1, 'default_airlines':1}</field>
+        </record>
+    </data>
+</odoo>

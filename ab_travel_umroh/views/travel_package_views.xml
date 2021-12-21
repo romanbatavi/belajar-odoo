@@ -1,0 +1,187 @@
+<odoo>
+    <data>
+        <record id="paket_perjalanan_view_tree" model="ir.ui.view">
+            <field name="name">paket.perjalanan.tree</field>
+            <field name="model">paket.perjalanan</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="tanggal_berangkat" required="True"/>
+                    <field name="tanggal_kembali" required="True"/>
+                    <field name="product_id"/>
+                    <field name="bom_id"/>
+                    <field name="quota" widget="progressbar" optional="hide"/>
+                    <field name="remaining_quota"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- TRAVEL PACKAGE -->
+        <record id="paket_perjalanan_view_form" model="ir.ui.view">
+            <field name="name">paket.perjalanan.form</field>
+            <field name="model">paket.perjalanan</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <header>
+                        <button id="button_confirm" name="action_confirm" string="Confirm" states="draft" class="btn-primary" type="object"/>
+                        <button id="button_draft" name="action_draft" string="Set To Draft" states="confirm" type="object"/>
+                        <button id="button_draft" name="action_draft" string="Update Jamaah" states="confirm" class="btn-primary" type="object"/>
+                        <button id="button_done" name="action_done" string="Done" states="confirm" class="btn-primary" type="object"/>
+                        <button id="button_draft" name="action_draft" string="Cetak Manifest" states="confirm" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done" />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <group string ="Informasi Jadwal" col="4">
+                            <field name="tanggal_berangkat" required="True"/>
+                            <field name="tanggal_kembali" required="True"/>
+                        </group>
+                        <group string ="Produk" col="4">
+                            <field name="product_id"/>
+                            <field name="bom_id"/>
+                        </group>
+                        <group string ="Seats" col="4">
+                            <field name="quota"/>
+                            <field name="quota_progress" widget="progressbar"/>
+                            <field name="remaining_quota"/>
+                        </group>
+                        <notebook>
+                            <page string="Hotel Lines">
+                                <!-- NOTEBOOK HOTEL -->
+                                <group>
+                                    <field name="hotel_line" mode="tree,kanban" nolabel="1">
+                                        <tree string = "Hotel Lines" editable="top">
+                                            <field name="partner_id" />
+                                            <field name="tanggal_masuk" />
+                                            <field name="tanggal_keluar" />
+                                            <field name="nama_kota" />
+                                        </tree>
+                                        <form string="Hotel String">
+                                            <group col="4">
+                                                <field name="partner_id" />
+                                                <field name="tanggal_masuk" />
+                                                <field name="tanggal_keluar" />
+                                                <field name="nama_kota" />
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+                            </page>
+
+                            <page string="Airline Lines">
+                                <!-- NOTEBOOK AIRLINE -->
+                                <group>
+                                    <field name="airline_line" mode="tree,kanban" nolabel="1">
+                                        <tree string = "Airline Lines" editable="top">
+                                            <field name="partner_id" />
+                                            <field name="tanggal_berangkat" />
+                                            <field name="kota_asal" />
+                                            <field name="kota_tujuan" />
+                                        </tree>
+                                        <form string="Airline String">
+                                            <group>
+                                                <field name="partner_id" />
+                                                <field name="tanggal_berangkat" />
+                                                <field name="kota_asal" />
+                                                <field name="kota_tujuan" />
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+                            </page>
+
+                            <page string="Schedule Lines">
+                                <!-- NOTEBOOK SCHEDULE -->
+                                <group>
+                                    <field name="schedule_line" mode="tree,kanban" nolabel="1">
+                                        <tree string = "Schedule Lines" editable="top">
+                                            <field name="schedule" />
+                                            <field name="tanggal_kegiatan" />
+                                        </tree>
+                                        <form string="Schedule_String">
+                                            <group>
+                                                <field name="schedule" />
+                                                <field name="tanggal_kegiatan" />
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+                            </page>
+
+                            <page string="Manifest">
+                                <!-- NOTEBOOK MANIFEST -->
+                                <group>
+                                    <field name="manifest_line" mode="tree,kanban" nolabel="1">
+                                        <tree string = "Manifest Lines" editable="top">
+                                            <field name="title" />
+                                            <field name="nama_passpor" />
+                                            <field name="jenis_kelamin" />
+                                            <field name="no_ktp" />
+                                            <field name="passpor" />
+                                            <field name="tanggal_lahir" />
+                                            <field name="tempat_lahir" />
+                                            <field name="tanggal_berlaku" />
+                                            <field name="tanggal_expired" />
+                                            <field name="imigrasi" />
+                                            <field name="tipe_kamar" />
+                                            <field name="umur" />
+                                            <field name="partner_id" />
+                                            <field name="agent" />
+                                        </tree>
+                                        <form string="Manifest String">
+                                            <group col="4">
+                                                <field name="title" />
+                                                <field name="nama_passpor" />
+                                                <field name="jenis_kelamin" />
+                                                <field name="no_ktp" />
+                                                <field name="passpor" />
+                                                <field name="tanggal_lahir" />
+                                                <field name="tempat_lahir" />
+                                                <field name="tanggal_berlaku" />
+                                                <field name="tanggal_expired" />
+                                                <field name="imigrasi" />
+                                                <field name="tipe_kamar" />
+                                                <field name="umur" />
+                                                <field name="partner_id" />
+                                                <field name="agent" />
+                                            </group>
+                                        </form>
+                                    </field>
+                                </group>
+                            </page>
+
+                            <page string="HPP Lines">
+                                <!-- NOTEBOOK HPP -->
+                                <group>
+                                    <field name="hpp_line" mode="tree,kanban" nolabel="1">
+                                        <tree string = "HPP Lines" editable="top">
+                                            <field name="hpp_barang" />
+                                            <field name="hpp_qty" />
+                                            <field name="uom_id" />
+                                            <field name="hpp_price" />
+                                            <field name="hpp_sub_total" />
+                                        </tree>
+                                    </field>
+                                </group>
+                                <div class="oe_title float-right">
+                                    <group>
+                                        <field name="total_cost" string="Total cost: "/>
+                                    </group>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="travel_package_action" model="ir.actions.act_window">
+            <field name="name">Travel Package</field>
+            <field name="res_model">paket.perjalanan</field>
+            <field name="view_mode">tree,kanban,form</field>
+        </record>
+    </data>
+</odoo>
