@@ -6,15 +6,13 @@
 5.domain dan context pada airlines dan hotels harus di 1 form action (Done)
 6.separator suku kata tiap penamaan yang lebih dari 2 suku kata tetap pakai underscore(_) (Done)
 7.format css dalam xml sebaiknya dihapus (Done)
-8.tidak mendifinisikan ulang action xml yang sama (Postponed)
-9.untuk posisi direktori folder belum dipindahkan ke folder khusus training (postponed)
+8.tidak mendifinisikan ulang action xml yang sama (Done)
+9.untuk posisi direktori folder belum dipindahkan ke folder khusus training (Done)
 ====================YANG KURANG================
 --> pakettravel diatas belum berubah
 --> 3 onchange belum dibuat
 --> belum ada function untuk kondisi state
 --> relate jenis kelamin
---> total cost belum compute dan belum visible
---> compute masih error
 
 
 

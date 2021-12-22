@@ -8,7 +8,7 @@
         <menuitem id="menu_bar_master_transaction" name="Transaction" parent="menu_dashboard_ab_travel_umroh"/>
 
         <!-- Membuat Menu Item-->
-        <menuitem id="menu_item_produk" name="Produk" parent="menu_bar_master_data" action="produk_action"/>
+        <menuitem id="menu_item_produk" name="Produk" parent="menu_bar_master_data" action="stock.product_template_action_product"/>
         <menuitem id="menu_item_paketproduk" name="Paket Produk" parent="menu_bar_master_data" action="paketproduk_action"/>
         <menuitem id="menu_item_jamaah" name="Jamaah" parent="menu_bar_master_data" action="jamaah_action"/>
         <menuitem id="menu_item_airlines" name="Airlines" parent="menu_bar_master_data" action="airlines_action"/>
