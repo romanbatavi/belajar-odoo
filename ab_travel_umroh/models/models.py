@@ -18,7 +18,8 @@ class PaketPerjalanan(models.Model):
     schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line')
     hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
     manifest_line = fields.One2many('manifest.line', 'paket_id', string='Manifest Line', readonly=True)
-    name = fields.Char(string='Referensi', readonly=True, default='-')
+    ref = fields.Char(string='Referensi', readonly=True, default='-')
+    name = fields.Char(compute='_compute_name', string='')
     total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
     
     #ONCHANGE HPP
@@ -26,9 +27,7 @@ class PaketPerjalanan(models.Model):
     def _onchange_bom_id(self):
         for rec in self:
             lines = [(5, 0, 0)]
-            total = 0
             for line in self.bom_id.bom_ids.bom_line_ids:
-                # total += line.product_qty * line.product_id.standard_price
                 vals = {
                     'mrp_id': line.id,
                     'hpp_barang': line.display_name,
@@ -38,7 +37,6 @@ class PaketPerjalanan(models.Model):
                 }
                 lines.append((0, 0, vals))
             rec.hpp_line = lines
-            # rec.total_cost = total
             
     @api.depends('hpp_line')
     def _compute_total_cost(self):
@@ -56,13 +54,13 @@ class PaketPerjalanan(models.Model):
     
     @api.model
     def create(self, vals):
-        vals['name'] = self.env['ir.sequence'].next_by_code('paket.perjalanan')
+        vals['ref'] = self.env['ir.sequence'].next_by_code('paket.perjalanan')
         return super(PaketPerjalanan, self).create(vals)
     
-    @api.depends('name','product_id')
+    @api.depends('ref','product_id')
     def _compute_name(self):
-        for ref in self:
-            ref.name = str(ref.name) +" - "+ str(ref.product_id.name)
+        for i in self:
+            i.name = str(i.ref) +" - "+ str(i.product_id.name)
     
     def action_draft(self):
         self.write({'state': 'draft'})
