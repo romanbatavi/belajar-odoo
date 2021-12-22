@@ -1,0 +1,232 @@
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from random import randint
+from datetime import timedelta, datetime, date
+from typing_extensions import Required
+
+
+class TravelPackage(models.Model):
+    _name = 'travel.package'
+    _description = 'Travel Package'
+
+    @api.depends('kuota_jamaah', 'jamaah_ids')
+    def compute_taken_kuota(self):
+        for sesi in self:
+            sesi.kuota_progres = 0
+            if sesi.kuota_jamaah and sesi.jamaah_ids:
+                sesi.kuota_progres = 100 * \
+                    len(sesi.jamaah_ids) / sesi.kuota_jamaah
+
+    name = fields.Char(compute='_compute_name', string='')
+
+    # Membuat Squence
+    ref = fields.Char(string='Referensi', readonly=True, default='-')
+
+    # Membuat Informasi Jadwal
+    tanggal_berangkat = fields.Date(string='Tanggal Berangkat', required=True, readonly=True, states={'draft': [('readonly', False)]})
+    tanggal_kembali = fields.Date(string='Tanggak Kembali', required=True, readonly=True, states={'draft': [('readonly', False)]})
+    
+    # Membuat Product
+    product_id = fields.Many2one('product.product', string='Sale', tracking=True, required=True, readonly=True, states={'draft': [('readonly', False)]})
+    package_id = fields.Many2one('product.product', string='Package', tracking=True, required=True, readonly=True, states={'draft': [('readonly', False)]})
+    
+    # Membuat Seats
+    kuota_jamaah = fields.Integer(string='Quota', help='Jumlah Kuota', default=0, readonly=True, states={'draft': [('readonly', False)]})
+    kuota_progres = fields.Float(string='Quota Progress', compute='compute_taken_kuota', readonly=True, states={'draft': [('readonly', False)]})
+    remaining_kuota = fields.Integer(related='kuota_jamaah', string='Remaining Quota', store=True)
+    jamaah_ids = fields.Many2many('jamaah.package', 'package_jamaah_rel', 'package_id', 'jamaah_id', 'Jamaah')
+    
+    # Membuat One 2 Many Notebook Hotel
+    hotel_line = fields.One2many('hotel.line', 'travel_id', string='Hotel Line', readonly=True, states={'draft': [('readonly', False)]})
+
+    # Membuat Notebook Airlines
+    airlines_line = fields.One2many('airline.lines', 'travel_id', string='Airlines', readonly=True, states={'draft': [('readonly', False)]})
+
+    # Membuat Notebook HPP Line
+    hpp_line = fields.One2many('hpp.line', 'package_id', string='HPP Line', readonly=True, states={'draft': [('readonly', False)]})
+    total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
+
+     # Membuat Notebook Schedule Line
+
+    shcedule_line = fields.One2many('schedule.line', 'package_id', string='Schedule Line', readonly=True, states={'draft': [('readonly', False)]})
+
+    # Membuat Notebook Manifest
+
+    manifest_line = fields.One2many('manifest.line', 'package_id', string='Manifest', readonly=True, states={'draft': [('readonly', False)]})
+
+    # Membuat State
+    state = fields.Selection([('draft', 'Draft'), ('confirm', 'Confirm'), ('done', 'Done')], string='Status', readonly=True, default='draft')
+    
+    # Membuat onchange hpp line
+    @api.onchange('package_id')
+    def _onchange_package_id(self):
+        for rec in self:
+            lines = [(5, 0, 0)]
+            for line in self.package_id.bom_ids.bom_line_ids:
+                vals = {
+                    'mrp_id': line.id,
+                    'nama_barang':line.display_name,
+                    'hpp_quantity': line.product_qty,
+                    'uom_id': line.product_uom_id.id,
+                    'hpp_price': line.product_id.standard_price,
+                }
+                lines.append((0, 0, vals))
+            rec.hpp_line = lines
+
+    # Membuat compute total cost
+    @api.depends('hpp_line')
+    def _compute_total_cost(self):
+        for record in self:
+            total = 0
+            for line in record.hpp_line: 
+                total += line.hpp_total
+            record.total_cost = total
+    
+    
+    def action_confirm(self):
+        self.write({'state': 'confirm'})
+      
+    def action_cancel(self):
+        self.write({'state': 'draft'})
+      
+    def action_close(self):
+        self.write({'state': 'done'})
+
+    # Membuat Onchange Update Jamaah
+    @api.onchange('manifest_line')
+    def action_update_jamaah(self):
+        print('========================================', self.manifest_line.sale_id.manifest_line.nama_passpor)
+        # for rec in self:
+        #     lines = [(5, 0, 0)]
+        #     print("======================", self.manifest_line.partner_id)
+        #     for line in self.manifest_line.partner_id:
+        #         vals = {
+        #             'title': line.partner_id.title.name,
+        #             'nama_passpor': line.city
+        #         }
+        #         lines.append((0, 0, vals))
+        #     print("============================" ,lines)
+        #     rec.manifest_line = lines
+
+
+    @api.model
+    def create(self, vals):
+        vals['ref'] = self.env['ir.sequence'].next_by_code('travel.package')
+        return super(TravelPackage, self).create(vals)
+    
+    @api.depends('ref','product_id')
+    def _compute_name(self):
+        for i in self:
+            i.name = str(i.ref) +" - "+ str(i.product_id.name)
+    
+
+class HotelLine(models.Model):
+    _name = 'hotel.line'
+
+    # Membuat Notebook Hotel
+    travel_id = fields.Many2one('travel.package', string='Hotel Line', required=True, ondelete='cascade')
+    in_hotel = fields.Date(string='Check In Hotel', required=True)
+    out_hotel = fields.Date(string='Check Out Hotel', required=True)
+    partner_id = fields.Many2one('res.partner', string='Nama Hotel', required=True, domain=[('hotel', '=', True)])
+    nama_kota = fields.Char(string='Nama Kota', related='partner_id.city', tracking=True, store=True)
+
+class AirlineLines(models.Model):
+    _name = 'airline.lines'
+
+    # Membuat Notebook Airlines
+    travel_id = fields.Many2one('travel.package', string='Airlines Line', required=True, ondelete='cascade')
+    partner_id = fields.Many2one('res.partner', string='Nama Airlines', required=True, domain=[('airlines', '=', True)])
+    kota_asal = fields.Char(string='Kota Asal', required=True)
+    kota_tujuan = fields.Char(string='Kota Tujuan', required=True)
+    tanggal_berangkat = fields.Date(string='Tanggal Berangkat', required=True)
+
+class HppLine(models.Model):
+    _name = 'hpp.line'
+    
+    @api.depends('hpp_quantity')
+    def _compute_total_cost(self):
+        for hpp in self:
+            hpp.hpp_total = 0
+            if hpp.hpp_quantity and hpp.hpp_price :
+                hpp.hpp_total = hpp.hpp_quantity * hpp.hpp_price
+    
+    # Membuat Notebook HPP Line
+    package_id = fields.Many2one('travel.package', string='Airlines Line', required=True, ondelete='cascade')
+    mrp_id = fields.Many2one('mrp.bom', string='Barang', readonly=True)
+    nama_barang = fields.Char(string='Barang')
+    hpp_quantity = fields.Integer(string='Quantity')
+    uom_id = fields.Many2one('uom.uom', string='Units(s)')
+    hpp_price = fields.Float(string='Unit Price')
+    hpp_total = fields.Float(string='Sub Total', compute='_compute_total_cost')
+
+class ScheduleLines(models.Model):
+    _name = 'schedule.line'
+
+    # Membuat Notebook Schedule Line
+    package_id = fields.Many2one('travel.package', string='Schedule Lines', required=True, ondelete='cascade')
+    nama_kegiatan = fields.Char(string='Nama Kegiatan', required=True)
+    tanggal_kegiatan = fields.Date(string='Tanggal Kegiatan', required=True)
+
+class JamaahPackage(models.Model):
+    _name = 'jamaah.package'
+    _inherits = {'res.partner': 'jamaah_id'}
+
+    # Untuk Compute Progres
+    jamaah_id = fields.Many2one('res.partner', 'Jamaah', required=True, ondelete='cascade')
+
+class ManifestLine(models.Model):
+    _name = 'manifest.line'
+
+    package_id = fields.Many2one('travel.package', string='Manifest', ondelete='cascade')
+    sale_id = fields.Many2one('sale.order', string='Manifest', ondelete='cascade')
+    partner_id = fields.Many2one('res.partner', string='Nama Jamaah', ondelete='cascade')
+    title = fields.Char(string='Title', related='partner_id.title.name')
+    nama_passpor = fields.Char(string='Nama Passpor', related='partner_id.nama_passpor')
+    jenis_kelamin = fields.Selection([('laki-laki', 'Laki-Laki'), ('perempuan', 'Perempuan')], string="Jenis Kelamin", related='partner_id.jenis_kelamin')
+    no_ktp = fields.Char(string='No.KTP', related='partner_id.no_ktp')
+    no_passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
+    tanggal_lahir = fields.Date(string='Tanggal Lahir', related='partner_id.tanggal_lahir')
+    tempat_lahir = fields.Char(string='Tempat Lahir', related='partner_id.tempat_lahir')
+    tanggal_berlaku = fields.Date(string='Tanggal Berlaku', related='partner_id.tanggal_berlaku')
+    tanggal_expired = fields.Date(string='Tanggal Expired', related='partner_id.tanggal_expired')
+    imigrasi = fields.Char(string='Imigrasi', related='partner_id.imigrasi')
+    tipe_kamar = fields.Selection([('duoble', 'Duoble'), ('triple', 'Triple'), ('quad', 'Quad')], string='Tipe Kamar', default='quad', required=True)
+    umur = fields.Integer(string='Umur', related='partner_id.umur')
+    mahrom = fields.Char(string='Mahrom')
+    agen = fields.Char(string='Agen')
+    note = fields.Char(string='Notes')
+    scan_passpor = fields.Image(string='Scan Passpor')
+    scan_buku_nikah = fields.Image(string='Scan Buku Nikah')
+    scan_ktp = fields.Image(string='Scan KTP')
+    scan_kartu_keluarga = fields.Image(string='Scan Kartu Keluarga')
+    
+
+
+    
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from random import randint
+from datetime import timedelta, datetime, date
+from typing_extensions import Required
+
+class SalesOrder(models.Model):
+    _inherit = 'sale.order'
+
+    # Membuat Inherit Sale Order
+    package_id = fields.Many2one('travel.package', string='Paket Perjalanan', required=True, domain=[('state', '=', 'confirm')])
+    manifest_line = fields.One2many('manifest.line', 'sale_id', string='Manifest')
+
+    # Membuat onchange Sale Order
+    @api.onchange('package_id')
+    def _onchange_package_id(self):
+        for rec in self:
+            lines = [(5, 0, 0)]
+            for line in self.package_id.product_id:
+                vals = {
+                    'product_id': line.id,
+                    'name': line.name,
+                    'product_uom': line.uom_id,
+                    'price_unit': line.list_price
+                }
+                lines.append((0, 0, vals))
+            rec.order_line = lines

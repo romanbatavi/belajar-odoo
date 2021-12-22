@@ -162,15 +162,15 @@
                                             <field name="hpp_qty" />
                                             <field name="uom_id" />
                                             <field name="hpp_price" />
-                                            <field name="hpp_sub_total" />
+                                            <field name="hpp_total" />
                                         </tree>
                                     </field>
                                 </group>
-                                <!-- <div class="oe_title float-right">
+                                <div class="oe_title float-right">
                                     <group>
                                         <field name="total_cost" string="Total cost: "/>
                                     </group>
-                                </div> -->
+                                </div>
                             </page>
                         </notebook>
                     </sheet>

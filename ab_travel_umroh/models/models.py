@@ -19,7 +19,7 @@ class PaketPerjalanan(models.Model):
     hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
     manifest_line = fields.One2many('manifest.line', 'paket_id', string='Manifest Line', readonly=True)
     name = fields.Char(string='Referensi', readonly=True, default='-')
-    # total_cost = fields.Float(compute='_compute_total_cost', string='Total', readonly=True)
+    total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
     
     #ONCHANGE HPP
     @api.onchange('bom_id')
@@ -39,6 +39,14 @@ class PaketPerjalanan(models.Model):
                 lines.append((0, 0, vals))
             rec.hpp_line = lines
             # rec.total_cost = total
+            
+    @api.depends('hpp_line')
+    def _compute_total_cost(self):
+        for record in self:
+            total = 0
+            for line in record.hpp_line: 
+                total += line.hpp_total
+            record.total_cost = total
     
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -50,6 +58,11 @@ class PaketPerjalanan(models.Model):
     def create(self, vals):
         vals['name'] = self.env['ir.sequence'].next_by_code('paket.perjalanan')
         return super(PaketPerjalanan, self).create(vals)
+    
+    @api.depends('name','product_id')
+    def _compute_name(self):
+        for ref in self:
+            ref.name = str(ref.name) +" - "+ str(ref.product_id.name)
     
     def action_draft(self):
         self.write({'state': 'draft'})
@@ -133,14 +146,16 @@ class HppLine(models.Model):
     hpp_qty = fields.Float(string='Quantity')
     uom_id = fields.Many2one('uom.uom', string='Unit(s)')
     hpp_price = fields.Float(string='Unit Price')
-    hpp_sub_total = fields.Float(compute='_compute_hpp_sub_total', string='Sub Total', readonly=True)
+    # hpp_sub_total = fields.Float(compute='_compute_hpp_sub_total', string='Sub Total', readonly=True)
+    hpp_total = fields.Float(string='Sub Total', compute='_compute_total_cost')
+    
     #FUNCTION QUANTITY * PRICE
-    @api.depends('hpp_qty','hpp_price')
-    def _compute_hpp_sub_total(self):
-        for subtot in self:
-            subtot.hpp_sub_total = 0
-            if subtot.hpp_qty and subtot.hpp_price:
-                subtot.hpp_sub_total = subtot.hpp_qty * subtot.hpp_price
+    @api.depends('hpp_qty')
+    def _compute_total_cost(self):
+        for hpp in self:
+            hpp.hpp_total = 0
+            if hpp.hpp_qty and hpp.hpp_price :
+                hpp.hpp_total = hpp.hpp_qty * hpp.hpp_price
                 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
