@@ -166,11 +166,11 @@
                                         </tree>
                                     </field>
                                 </group>
-                                <div class="oe_title float-right">
+                                <!-- <div class="oe_title float-right">
                                     <group>
                                         <field name="total_cost" string="Total cost: "/>
                                     </group>
-                                </div>
+                                </div> -->
                             </page>
                         </notebook>
                     </sheet>

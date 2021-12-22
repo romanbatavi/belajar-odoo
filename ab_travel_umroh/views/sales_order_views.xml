@@ -61,11 +61,5 @@
                 </notebook>
             </field>
         </record>
-
-        <record id="sales_order_action" model="ir.actions.act_window">
-            <field name="name">Sales Order</field>
-            <field name="res_model">sale.order</field>
-            <field name="view_mode">kanban,tree,form</field>
-        </record>
     </data>
 </odoo>

@@ -58,7 +58,11 @@ kill -9
                             <field name="context">{'search_default_customer': 1,'res_partner_search_mode': 'customer', 'default_is_company': True, 'default_customer_rank': 1}</field>
 ===========================================================================
 
-
+        <record id="sales_order_action" model="ir.actions.act_window">
+            <field name="name">Sales Order</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">kanban,tree,form</field>
+        </record>
 ===========================================================================
 from typing_extensions import Required
 from odoo import api, fields, models         
@@ -227,7 +231,7 @@ class SaleOrder(models.Model):
     #     ('professor', 'Professor')
     # ], string='Title', Required=True, related='partner_id.title.name')
     
- ==============================================================
+ ===================================================================================================================================
  
  from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError

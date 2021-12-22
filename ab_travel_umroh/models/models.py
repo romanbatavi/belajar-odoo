@@ -19,15 +19,7 @@ class PaketPerjalanan(models.Model):
     hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
     manifest_line = fields.One2many('manifest.line', 'paket_id', string='Manifest Line', readonly=True)
     name = fields.Char(string='Referensi', readonly=True, default='-')
-    total_cost = fields.Float(compute='_compute_total_cost', string='Total', readonly=True)
-    
-    # ONCHANGE TOTAL_COST
-    @api.depends('total_cost')
-    def _compute_total_cost(self):
-        for total in self:
-            total_cost = 0
-            for i in total.hpp_line:
-                total_cost += i.hpp_sub_total
+    # total_cost = fields.Float(compute='_compute_total_cost', string='Total', readonly=True)
     
     #ONCHANGE HPP
     @api.onchange('bom_id')
@@ -36,7 +28,7 @@ class PaketPerjalanan(models.Model):
             lines = [(5, 0, 0)]
             total = 0
             for line in self.bom_id.bom_ids.bom_line_ids:
-                total += line.product_qty * line.product_id.standard_price
+                # total += line.product_qty * line.product_id.standard_price
                 vals = {
                     'mrp_id': line.id,
                     'hpp_barang': line.display_name,
@@ -46,7 +38,7 @@ class PaketPerjalanan(models.Model):
                 }
                 lines.append((0, 0, vals))
             rec.hpp_line = lines
-            rec.total_cost = total
+            # rec.total_cost = total
     
     state = fields.Selection([
         ('draft', 'Draft'),
