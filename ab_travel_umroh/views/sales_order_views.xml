@@ -12,7 +12,7 @@
                 <notebook position="inside">
                     <page string="Manifest">
                         <group>
-                            <field name="manifest_line" mode="tree,kanban" nolabel= "1">
+                            <field name="manifest_sale_line" mode="tree,kanban" nolabel= "1">
                                 <tree string="manifest Line">
                                     <field name="title" />
                                     <field name="nama_passpor" />

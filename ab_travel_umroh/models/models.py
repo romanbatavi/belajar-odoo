@@ -1,6 +1,7 @@
 
 from typing_extensions import Required
-from odoo import api, fields, models         
+from odoo import api, fields, models
+from datetime import timedelta, datetime, date    
 class PaketPerjalanan(models.Model):
     _name = 'paket.perjalanan'
     _description = 'Travel Package'
@@ -17,9 +18,11 @@ class PaketPerjalanan(models.Model):
     airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line') 
     schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line')
     hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
-    manifest_line = fields.One2many('manifest.line', 'paket_id', string='Manifest Line', readonly=True)
-    ref = fields.Char(string='Referensi', readonly=True, default='-')
+    manifest_paket_line = fields.One2many('manifest.paket', 'paket_id', string='Manifest Line', readonly=True)
+    #REF
     name = fields.Char(compute='_compute_name', string='')
+    ref = fields.Char(string='Referensi', readonly=True, default='-')
+    
     total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
     
     #ONCHANGE HPP
@@ -99,11 +102,44 @@ class ScheduleLine(models.Model):
     paket_id = fields.Many2one('paket.perjalanan', string='Hotel Line')
     tanggal_kegiatan = fields.Date(string='Tanggal Kegiatan')
     
-class ManifestLine(models.Model):
-    _name = 'manifest.line'
-    _description = 'Manifest Line'
+class ManifestPaket(models.Model):
+    _name = 'manifest.paket'
+    _description = 'Manifest Paket'
     
     paket_id = fields.Many2one('paket.perjalanan', string='Manifest')
+    partner_id = fields.Many2one('res.partner', string='Nama Jamaah')
+    title = fields.Char(string='Title', Required=True, related='partner_id.title.name')
+    nama_passpor = fields.Char(string='Nama Passpor', related='partner_id.nama_passpor')
+    jenis_kelamin = fields.Selection([
+        ('laki', 'Laki-Laki'), 
+        ('perempuan', 'Perempuan')], 
+        string='Jenis Kelamin', help='Gender')
+    no_ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
+    passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
+    tanggal_lahir = fields.Date(string='Tanggal Lahir', related='partner_id.tanggal_lahir')
+    tempat_lahir = fields.Char(string='Tempat Lahir', related='partner_id.tempat_lahir')
+    tanggal_berlaku = fields.Date(string='Tanggal Berlaku', related='partner_id.tanggal_berlaku')
+    tanggal_expired = fields.Date(string='Tanggal Expired', related='partner_id.tanggal_habis')
+    imigrasi = fields.Char(string='Imigrasi', related='partner_id.imigrasi')
+    tipe_kamar = fields.Selection([
+        ('double', 'Double'), 
+        ('triple', 'Triple'), 
+        ('quad', 'Quad')], 
+        string='Tipe Kamar', default='quad', required=True)
+    umur = fields.Char(string='Umur', related='partner_id.umur')
+    mahram_id = fields.Many2one('res.partner', string='Mahram')
+    agent = fields.Char(string='Agent')
+    notes = fields.Char(string='Notes') 
+    
+    gambar_passpor = fields.Image(string="Scan Passpor", related='partner_id.gambar_passpor')
+    gambar_ktp = fields.Image(string="Scan KTP", related='partner_id.gambar_ktp')
+    gambar_bukuk_nikah = fields.Image(string="Scan Buku Nikah", related='partner_id.gambar_bukuk_nikah')
+    gambar_kartu_keluarga = fields.Image(string="Scan Kartu Keluarga", related='partner_id.gambar_kartu_keluarga')
+    
+class ManifestSale(models.Model):
+    _name = 'manifest.sale'
+    _description = 'Manifest Sale'
+    
     sale_id = fields.Many2one('sale.order', string='Manifest')
     partner_id = fields.Many2one('res.partner', string='Nama Jamaah')
     title = fields.Char(string='Title', Required=True, related='partner_id.title.name')
@@ -159,5 +195,5 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
     paket_id = fields.Many2one('paket.perjalanan', string='Paket Perjalanan')
-    manifest_line = fields.One2many('manifest.line', 'sale_id', string='Passport Line')
+    manifest_sale_line = fields.One2many('manifest.sale', 'sale_id', string='Passport Line')
     

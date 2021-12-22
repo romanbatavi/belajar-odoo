@@ -114,7 +114,7 @@
                             <page string="Manifest">
                                 <!-- NOTEBOOK MANIFEST -->
                                 <group>
-                                    <field name="manifest_line" mode="tree,kanban" nolabel="1">
+                                    <field name="manifest_paket_line" mode="tree,kanban" nolabel="1">
                                         <tree string = "Manifest Lines" editable="top">
                                             <field name="title" />
                                             <field name="nama_passpor" />
