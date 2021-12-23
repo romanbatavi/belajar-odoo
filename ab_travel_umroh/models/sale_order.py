@@ -1,13 +1,10 @@
 from odoo import api, fields, models
 from datetime import timedelta, datetime, date    
-
-        
-        
 class ManifestSale(models.Model):
     _name = 'manifest.sale'
     _description = 'Manifest Sale'
     
-    sale_id = fields.Many2one('sale.order', string='Manifest')
+    sale_id = fields.Many2one('sale.order', string='Manifest Sale')
     partner_id = fields.Many2one('res.partner', string='Nama Jamaah')
     title = fields.Char(string='Title', Required=True, related='partner_id.title.name')
     nama_passpor = fields.Char(string='Nama Passpor', related='partner_id.nama_passpor')
@@ -40,7 +37,7 @@ class ManifestSale(models.Model):
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
     
-    paket_id = fields.Many2one('paket.perjalanan', string='Paket Perjalanan')
+    paket_id = fields.Many2one('paket.perjalanan', string='Paket Perjalanan', domain=[('state', '=', 'confirm')])
     manifest_sale_line = fields.One2many('manifest.sale', 'sale_id', string='Passport Line')
     
     @api.onchange('paket_id')

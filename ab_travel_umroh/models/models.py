@@ -6,24 +6,27 @@ class PaketPerjalanan(models.Model):
     _name = 'paket.perjalanan'
     _description = 'Travel Package'
     
-    tanggal_berangkat = fields.Date(string="Tanggal Berangkat", required=True)
-    tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True)
-    product_id = fields.Many2one('product.product', string="Sale", required=True, tracking=True)
-    bom_id = fields.Many2one('product.product', string="Package",required=True,  tracking=True)
+    tanggal_berangkat = fields.Date(string="Tanggal Berangkat", required=True, states={'draft': [('readonly', False)]})
+    tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True, states={'draft': [('readonly', False)]})
+    product_id = fields.Many2one('product.product', string="Sale", required=True, tracking=True, states={'draft': [('readonly', False)]})
+    bom_id = fields.Many2one('product.product', string="Package",required=True,  tracking=True, states={'draft': [('readonly', False)]})
     quota = fields.Integer(string="Quota")
     remaining_quota = fields.Integer(string="Remaining Quota", related='quota')
     quota_progress = fields.Integer(string="Quota Progress")
     
-    hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line')
-    airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line') 
-    schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line')
-    hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
-    manifest_paket_line = fields.One2many('manifest.paket', 'paket_id', string='Manifest Line', readonly=True)
+    hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line', states={'draft': [('readonly', False)]})
+    airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line', states={'draft': [('readonly', False)]}) 
+    schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line', states={'draft': [('readonly', False)]})
+    hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line', states={'draft': [('readonly', False)]}) 
+    manifest_paket_line = fields.One2many('manifest.paket', 'paket_id', string='Manifest Line', readonly=True, states={'draft': [('readonly', False)]})
     #REF
     name = fields.Char(compute='_compute_name', string='')
     ref = fields.Char(string='Referensi', readonly=True, default='-')
     
     total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
+    
+    #BARU DIBUAT
+    # manifest_line = fields.One2many('sale.order', 'sale_id', string='UPDATE MANIFEST')
     
     #ONCHANGE HPP
     @api.onchange('bom_id')
@@ -106,7 +109,7 @@ class ManifestPaket(models.Model):
     _name = 'manifest.paket'
     _description = 'Manifest Paket'
     
-    paket_id = fields.Many2one('paket.perjalanan', string='Manifest')
+    paket_id = fields.Many2one('paket.perjalanan', string='Manifest Paket')
     partner_id = fields.Many2one('res.partner', string='Nama Jamaah')
     title = fields.Char(string='Title', Required=True, related='partner_id.title.name')
     nama_passpor = fields.Char(string='Nama Passpor', related='partner_id.nama_passpor')
@@ -155,4 +158,3 @@ class HppLine(models.Model):
             hpp.hpp_total = 0
             if hpp.hpp_qty and hpp.hpp_price :
                 hpp.hpp_total = hpp.hpp_qty * hpp.hpp_price
-                
