@@ -119,7 +119,7 @@
                                             <field name="title" />
                                             <field name="nama_passpor" />
                                             <field name="jenis_kelamin" />
-                                            <field name="no_ktp" />
+                                            <field name="ktp" />
                                             <field name="passpor" />
                                             <field name="tanggal_lahir" />
                                             <field name="tempat_lahir" />
@@ -136,7 +136,7 @@
                                                 <field name="title" />
                                                 <field name="nama_passpor" />
                                                 <field name="jenis_kelamin" />
-                                                <field name="no_ktp" />
+                                                <field name="ktp" />
                                                 <field name="passpor" />
                                                 <field name="tanggal_lahir" />
                                                 <field name="tempat_lahir" />

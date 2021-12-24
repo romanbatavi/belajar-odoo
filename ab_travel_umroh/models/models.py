@@ -10,20 +10,32 @@ class PaketPerjalanan(models.Model):
     tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True, states={'draft': [('readonly', False)]})
     product_id = fields.Many2one('product.product', string="Sale", required=True, tracking=True, states={'draft': [('readonly', False)]})
     bom_id = fields.Many2one('product.product', string="Package",required=True,  tracking=True, states={'draft': [('readonly', False)]})
-    quota = fields.Integer(string="Quota")
-    remaining_quota = fields.Integer(string="Remaining Quota", related='quota')
-    quota_progress = fields.Integer(string="Quota Progress")
+    
+    #KUOTA
+    quota = fields.Integer(string='Quota', help='Jumlah Quota', default=0, readonly=True, states={'draft': [('readonly', False)]})
+    remaining_quota = fields.Integer(related='quota', string='Remaining Quota', store=True)
+    quota_progress = fields.Float(string='Quota Progress', compute='compute_taken_quota', readonly=True, states={'draft': [('readonly', False)]})
+    jamaah_ids = fields.Many2many('jamaah.package', 'package_jamaah_rel', 'paket_id', 'jamaah_id', 'Jamaah')
     
     hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line', states={'draft': [('readonly', False)]})
     airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line', states={'draft': [('readonly', False)]}) 
     schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line', states={'draft': [('readonly', False)]})
     hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line', states={'draft': [('readonly', False)]}) 
     manifest_paket_line = fields.One2many('manifest.paket', 'paket_id', string='Manifest Line', readonly=True, states={'draft': [('readonly', False)]})
+    manipes = fields.One2many('sale.order', 'paket_id', string='')
+    
     #REF
     name = fields.Char(compute='_compute_name', string='')
     ref = fields.Char(string='Referensi', readonly=True, default='-')
-    
     total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
+    
+    @api.depends('quota', 'jamaah_ids')
+    def compute_taken_quota(self):
+        for sesi in self:
+            sesi.quota_progress = 0
+            if sesi.quota and sesi.jamaah_ids:
+                sesi.quota_progress = 100 * \
+                    len(sesi.jamaah_ids) / sesi.quota
     
     #ONCHANGE HPP
     @api.onchange('bom_id')
@@ -75,7 +87,28 @@ class PaketPerjalanan(models.Model):
         self.write({'state': 'done'})
     
     def action_update(self):
-        self.write({'state': 'done'})
+        self.write({'state': 'confirm'})
+        
+    # @api.onchange('manipes')
+    # def action_update(self):
+        # print('========================================',self.manipes.manifest_sale_line.partner_id.nama_passpor)
+        # for rec in self:
+        #     lines = [(5, 0, 0)]
+        #     for line in self.manipes.manifest_sale_line:
+        #         vals = {
+        #             'partner_id': line.id,
+        #             'title': line.partner_id.title.name,
+        #             'ktp': line.ktp,
+        #         }
+        #         lines.append((0, 0, vals))
+        #     print("============================" ,lines)
+        #     rec.manifest_paket_line = lines
+        
+class JamaahPackage(models.Model):
+    _name = 'jamaah.package'
+    _inherits = {'res.partner': 'jamaah_id'}
+
+    jamaah_id = fields.Many2one('res.partner', 'Jamaah', required=True, ondelete='cascade')
 
 class HotelLine(models.Model):
     _name = 'hotel.line'
@@ -116,8 +149,8 @@ class ManifestPaket(models.Model):
     jenis_kelamin = fields.Selection([
         ('laki', 'Laki-Laki'), 
         ('perempuan', 'Perempuan')], 
-        string='Jenis Kelamin', help='Gender',crelated='partner_id.nama_passpor')
-    no_ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
+        string='Jenis Kelamin', help='Gender', related='partner_id.jenis_kelamin')
+    ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
     passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
     tanggal_lahir = fields.Date(string='Tanggal Lahir', related='partner_id.tanggal_lahir')
     tempat_lahir = fields.Char(string='Tempat Lahir', related='partner_id.tempat_lahir')

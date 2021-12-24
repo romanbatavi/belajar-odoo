@@ -48,13 +48,13 @@ class Partner(models.Model):
         string='Ukuran Baju', help='Ukuran Baju')
     
     #TRIGGER UMUR SALE ORDER
-    umur = fields.Char(compute='_compute_umur', string='Umur')
+    umur = fields.Char(string='Umur')
     
-    @api.depends('tanggal_lahir')
-    def _compute_umur(self):
-        today_date = date.today()
-        for usia in self:
-            usia.umur=today_date.year - usia.tanggal_lahir.year
+    # @api.depends('tanggal_lahir')
+    # def _compute_umur(self):
+    #     today_date = date.today()
+    #     for usia in self:
+    #         usia.umur=today_date.year - usia.tanggal_lahir.year
     
     # PASSPOR INFORMATION
     no_passpor = fields.Char(string='No.Passpor')
