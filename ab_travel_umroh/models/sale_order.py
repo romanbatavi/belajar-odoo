@@ -11,7 +11,7 @@ class ManifestSale(models.Model):
     jenis_kelamin = fields.Selection([
         ('laki', 'Laki-Laki'), 
         ('perempuan', 'Perempuan')], 
-        string='Jenis Kelamin', help='Gender')
+        string='Jenis Kelamin',related='partner_id.jenis_kelamin', help='Gender')
     no_ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
     passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
     tanggal_lahir = fields.Date(string='Tanggal Lahir', related='partner_id.tanggal_lahir')

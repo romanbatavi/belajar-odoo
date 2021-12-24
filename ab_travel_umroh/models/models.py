@@ -25,9 +25,6 @@ class PaketPerjalanan(models.Model):
     
     total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
     
-    #BARU DIBUAT
-    # manifest_line = fields.One2many('sale.order', 'sale_id', string='UPDATE MANIFEST')
-    
     #ONCHANGE HPP
     @api.onchange('bom_id')
     def _onchange_bom_id(self):
@@ -76,6 +73,9 @@ class PaketPerjalanan(models.Model):
         
     def action_done(self):
         self.write({'state': 'done'})
+    
+    def action_update(self):
+        self.write({'state': 'done'})
 
 class HotelLine(models.Model):
     _name = 'hotel.line'
@@ -116,7 +116,7 @@ class ManifestPaket(models.Model):
     jenis_kelamin = fields.Selection([
         ('laki', 'Laki-Laki'), 
         ('perempuan', 'Perempuan')], 
-        string='Jenis Kelamin', help='Gender')
+        string='Jenis Kelamin', help='Gender',crelated='partner_id.nama_passpor')
     no_ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
     passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
     tanggal_lahir = fields.Date(string='Tanggal Lahir', related='partner_id.tanggal_lahir')

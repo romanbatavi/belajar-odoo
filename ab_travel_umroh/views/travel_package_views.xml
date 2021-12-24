@@ -24,7 +24,7 @@
                     <header>
                         <button id="button_confirm" name="action_confirm" string="Confirm" states="draft" class="btn-primary" type="object"/>
                         <button id="button_draft" name="action_draft" string="Set To Draft" states="confirm" type="object"/>
-                        <button id="button_draft" name="action_draft" string="Update Jamaah" states="confirm" class="btn-primary" type="object"/>
+                        <button id="button_update" name="action_update" string="Update Jamaah" states="confirm" class="btn-primary" type="object"/>
                         <button id="button_done" name="action_done" string="Done" states="confirm" class="btn-primary" type="object"/>
                         <button id="button_draft" name="action_draft" string="Cetak Manifest" states="confirm" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done" />
