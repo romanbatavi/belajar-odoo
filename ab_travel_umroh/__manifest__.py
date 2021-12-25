@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','stock','mrp'],
+    'depends': ['base','sale','stock','mrp','report_xlsx'],
 
     # always loaded
     'data': [
@@ -34,6 +34,7 @@
         'views/customer_invoice_views.xml',
         'views/sales_order_views.xml',
         'views/menu_item_views.xml',
+        'report/report_action.xml',
         
     ],
     # only loaded in demonstration mode

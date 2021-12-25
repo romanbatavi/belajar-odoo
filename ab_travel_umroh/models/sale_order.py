@@ -34,11 +34,11 @@ class ManifestSale(models.Model):
         ('perempuan', 'Perempuan')], 
         string='Jenis Kelamin',related='partner_id.jenis_kelamin', help='Gender')
     ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
-    passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
+    no_passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
     tanggal_lahir = fields.Date(string='Tanggal Lahir', related='partner_id.tanggal_lahir')
     tempat_lahir = fields.Char(string='Tempat Lahir', related='partner_id.tempat_lahir')
     tanggal_berlaku = fields.Date(string='Tanggal Berlaku', related='partner_id.tanggal_berlaku')
-    tanggal_expired = fields.Date(string='Tanggal Expired', related='partner_id.tanggal_habis')
+    tanggal_habis = fields.Date(string='Tanggal Expired', related='partner_id.tanggal_habis')
     imigrasi = fields.Char(string='Imigrasi', related='partner_id.imigrasi')
     tipe_kamar = fields.Selection([
         ('double', 'Double'), 
@@ -47,7 +47,6 @@ class ManifestSale(models.Model):
         string='Tipe Kamar', default='quad', required=True)
     umur = fields.Char(string='Umur', related='partner_id.umur')
     mahram_id = fields.Many2one('res.partner', string='Mahram')
-    agent = fields.Char(string='Agent')
     notes = fields.Char(string='Notes') 
     
     gambar_passpor = fields.Image(string="Scan Passpor", related='partner_id.gambar_passpor')

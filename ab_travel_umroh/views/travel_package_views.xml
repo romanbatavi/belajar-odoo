@@ -26,7 +26,7 @@
                         <button id="button_draft" name="action_draft" string="Set To Draft" states="confirm" type="object"/>
                         <button id="button_update" name="action_update" string="Update Jamaah" states="confirm" class="btn-primary" type="object"/>
                         <button id="button_done" name="action_done" string="Done" states="confirm" class="btn-primary" type="object"/>
-                        <button id="button_draft" name="action_draft" string="Cetak Manifest" states="confirm" type="object"/>
+                        <button id="action_report_excel" name="action_report_excel" string="Cetak Manifest" states="confirm" type="object"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,done" />
                     </header>
                     <sheet>
@@ -120,16 +120,15 @@
                                             <field name="nama_passpor" />
                                             <field name="jenis_kelamin" />
                                             <field name="ktp" />
-                                            <field name="passpor" />
+                                            <field name="no_passpor" />
                                             <field name="tanggal_lahir" />
                                             <field name="tempat_lahir" />
                                             <field name="tanggal_berlaku" />
-                                            <field name="tanggal_expired" />
+                                            <field name="tanggal_habis" />
                                             <field name="imigrasi" />
                                             <field name="tipe_kamar" />
                                             <field name="umur" />
-                                            <field name="partner_id" />
-                                            <field name="agent" />
+                                            <field name="mahram_id" />
                                         </tree>
                                         <form string="Manifest String">
                                             <group col="4">
@@ -137,16 +136,15 @@
                                                 <field name="nama_passpor" />
                                                 <field name="jenis_kelamin" />
                                                 <field name="ktp" />
-                                                <field name="passpor" />
+                                                <field name="no_passpor" />
                                                 <field name="tanggal_lahir" />
                                                 <field name="tempat_lahir" />
                                                 <field name="tanggal_berlaku" />
-                                                <field name="tanggal_expired" />
+                                                <field name="tanggal_habis" />
                                                 <field name="imigrasi" />
                                                 <field name="tipe_kamar" />
                                                 <field name="umur" />
-                                                <field name="partner_id" />
-                                                <field name="agent" />
+                                                <field name="mahram_id" />
                                             </group>
                                         </form>
                                     </field>

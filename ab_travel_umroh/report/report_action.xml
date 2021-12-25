@@ -1,0 +1,6 @@
+<odoo>
+    <data>
+        <report id="report_manifest_xlsx" model="paket.perjalanan" string="Report Manifest Excel" report_type="xlsx" name="ab_travel_umroh.report_manifest_xlsx" file="Report Manifest" attachment_use="False"/>
+    </data>
+</odoo>
+

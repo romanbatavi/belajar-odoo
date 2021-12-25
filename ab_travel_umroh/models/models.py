@@ -6,36 +6,36 @@ class PaketPerjalanan(models.Model):
     _name = 'paket.perjalanan'
     _description = 'Travel Package'
     
-    tanggal_berangkat = fields.Date(string="Tanggal Berangkat", required=True, states={'draft': [('readonly', False)]})
-    tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True, states={'draft': [('readonly', False)]})
-    product_id = fields.Many2one('product.product', string="Sale", required=True, tracking=True, states={'draft': [('readonly', False)]})
-    bom_id = fields.Many2one('product.product', string="Package",required=True,  tracking=True, states={'draft': [('readonly', False)]})
+    tanggal_berangkat = fields.Date(string="Tanggal Berangkat", required=True)
+    tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True)
+    product_id = fields.Many2one('product.product', string="Sale", required=True, tracking=True)
+    bom_id = fields.Many2one('product.product', string="Package",required=True,  tracking=True)
     
     #KUOTA
-    quota = fields.Integer(string='Quota', help='Jumlah Quota', default=0, readonly=True, states={'draft': [('readonly', False)]})
+    quota = fields.Integer(string='Quota', help='Jumlah Quota', default=0, readonly=True)
     remaining_quota = fields.Integer(related='quota', string='Remaining Quota', store=True)
-    quota_progress = fields.Float(string='Quota Progress', compute='compute_taken_quota', readonly=True, states={'draft': [('readonly', False)]})
-    jamaah_ids = fields.Many2many('jamaah.package', 'package_jamaah_rel', 'paket_id', 'jamaah_id', 'Jamaah')
+    quota_progress = fields.Integer(string='Quota Progress', compute='_compute_seats', readonly=True)
     
-    hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line', states={'draft': [('readonly', False)]})
-    airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line', states={'draft': [('readonly', False)]}) 
-    schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line', states={'draft': [('readonly', False)]})
-    hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line', states={'draft': [('readonly', False)]}) 
-    manifest_paket_line = fields.One2many('manifest.paket', 'paket_id', string='Manifest Line', readonly=True, states={'draft': [('readonly', False)]})
-    manipes = fields.One2many('sale.order', 'paket_id', string='')
+    hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line')
+    airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line') 
+    schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line')
+    hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
+    manifest_paket_line = fields.One2many('manifest.paket', 'paket_id', string='Manifest Line', readonly=True)
+    
+    manifest_line = fields.One2many('sale.order', 'paket_id', string='Penghubung Antar Manifest')
     
     #REF
     name = fields.Char(compute='_compute_name', string='')
     ref = fields.Char(string='Referensi', readonly=True, default='-')
     total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
     
-    @api.depends('quota', 'jamaah_ids')
-    def compute_taken_quota(self):
-        for sesi in self:
-            sesi.quota_progress = 0
-            if sesi.quota and sesi.jamaah_ids:
-                sesi.quota_progress = 100 * \
-                    len(sesi.jamaah_ids) / sesi.quota
+    @api.depends('quota','manifest_paket_line')
+    def _compute_seats(self):
+        for rec in self:
+            rec.quota_progress = 0
+            if rec.manifest_paket_line and rec.quota:
+                rec.remaining_quota = rec.quota - len(rec.manifest_paket_line)
+                rec.quota_progress = 100 * len(rec.manifest_paket_line) / rec.quota
     
     #ONCHANGE HPP
     @api.onchange('bom_id')
@@ -74,8 +74,8 @@ class PaketPerjalanan(models.Model):
     
     @api.depends('ref','product_id')
     def _compute_name(self):
-        for i in self:
-            i.name = str(i.ref) +" - "+ str(i.product_id.name)
+        for rec in self:
+            rec.name = str(rec.ref) +" - "+ str(rec.product_id.name)
     
     def action_draft(self):
         self.write({'state': 'draft'})
@@ -88,21 +88,35 @@ class PaketPerjalanan(models.Model):
     
     def action_update(self):
         self.write({'state': 'confirm'})
+    
+    def action_report_excel(self):
+        template_report = 'ab_travel_umroh.report_manifest_xlsx'
+        return self.env.ref(template_report).report_action(self)
         
-    # @api.onchange('manipes')
-    # def action_update(self):
-        # print('========================================',self.manipes.manifest_sale_line.partner_id.nama_passpor)
-        # for rec in self:
-        #     lines = [(5, 0, 0)]
-        #     for line in self.manipes.manifest_sale_line:
-        #         vals = {
-        #             'partner_id': line.id,
-        #             'title': line.partner_id.title.name,
-        #             'ktp': line.ktp,
-        #         }
-        #         lines.append((0, 0, vals))
-        #     print("============================" ,lines)
-        #     rec.manifest_paket_line = lines
+    @api.onchange('manifest_line')
+    def action_update(self):
+        for rec in self:
+            lines = [(5, 0, 0)]
+            for line in self.manifest_line.manifest_sale_line:
+                print("======================", self.manifest_line.partner_id.nama_passpor)
+                vals = {
+                    'partner_id': line.partner_id.id,
+                    'title': line.partner_id.title.name,
+                    'ktp': line.partner_id.ktp,
+                    'nama_passpor': line.partner_id.nama_passpor,
+                    'jenis_kelamin': line.partner_id.jenis_kelamin,
+                    'no_passpor': line.partner_id.no_passpor,
+                    'tanggal_lahir': line.partner_id.tanggal_lahir,
+                    'tempat_lahir': line.partner_id.tempat_lahir,
+                    'tanggal_berlaku': line.partner_id.tanggal_berlaku,
+                    'tanggal_habis': line.partner_id.tanggal_habis,
+                    'imigrasi': line.partner_id.imigrasi,
+                    'umur': line.partner_id.umur,
+                    'tipe_kamar': line.tipe_kamar,
+                    'mahram_id': line.mahram_id.name
+                }
+                lines.append((0, 0, vals))
+            rec.manifest_paket_line = lines
         
 class JamaahPackage(models.Model):
     _name = 'jamaah.package'
@@ -151,11 +165,11 @@ class ManifestPaket(models.Model):
         ('perempuan', 'Perempuan')], 
         string='Jenis Kelamin', help='Gender', related='partner_id.jenis_kelamin')
     ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
-    passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
+    no_passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
     tanggal_lahir = fields.Date(string='Tanggal Lahir', related='partner_id.tanggal_lahir')
     tempat_lahir = fields.Char(string='Tempat Lahir', related='partner_id.tempat_lahir')
     tanggal_berlaku = fields.Date(string='Tanggal Berlaku', related='partner_id.tanggal_berlaku')
-    tanggal_expired = fields.Date(string='Tanggal Expired', related='partner_id.tanggal_habis')
+    tanggal_habis = fields.Date(string='Tanggal Expired', related='partner_id.tanggal_habis')
     imigrasi = fields.Char(string='Imigrasi', related='partner_id.imigrasi')
     tipe_kamar = fields.Selection([
         ('double', 'Double'), 
@@ -164,7 +178,6 @@ class ManifestPaket(models.Model):
         string='Tipe Kamar', default='quad', required=True)
     umur = fields.Char(string='Umur', related='partner_id.umur')
     mahram_id = fields.Many2one('res.partner', string='Mahram')
-    agent = fields.Char(string='Agent')
     notes = fields.Char(string='Notes') 
     
     gambar_passpor = fields.Image(string="Scan Passpor", related='partner_id.gambar_passpor')
