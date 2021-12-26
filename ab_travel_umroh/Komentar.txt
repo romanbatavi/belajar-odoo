@@ -9,10 +9,7 @@
 8.tidak mendifinisikan ulang action xml yang sama (Done)
 9.untuk posisi direktori folder belum dipindahkan ke folder khusus training (Done)
 ====================YANG KURANG================
---> belum ada function untuk kondisi state
---> relate jenis kelamin
---> mahram belum di one2many
---> 
+--> manggil print jenis_kelamin jangan ngambil value
 
 
 

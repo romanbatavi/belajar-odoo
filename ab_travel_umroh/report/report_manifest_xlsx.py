@@ -11,28 +11,30 @@ class ReportManifestXlsx(models.AbstractModel):
 
     def generate_xlsx_report(self, workbook, data, obj):
         
-        # text_style = workbook.add_format({'font_size': 10, 'left': 1, 'bottom': 1, 'right': 1, 'top': 1, 'align': 'center', 'valign': 'vcenter', 
-        # 'text_wrap': True, })
-        # sub_header = workbook.add_format({'align': 'center', 'valign': 'vcenter', 'size': 11, 'bold': True})
-        # cell_text_format = workbook.add_format({'align': 'left', 'valign': 'vcenter', 'bold': True, 'size': 12})
-        # cell_text_format_top_left_right = workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True, 'size': 11, 'top': 1,
-        # 'left': 1, 'right': 1, 'bottom': 1})
-        # cell_text_format_top_left_right.set_bg_color('#80a7fa')
-        # worksheet = workbook.add_worksheet('Laporan Pinjaman Karyawan')
-        
         worksheet = workbook.add_worksheet('Travel Package %s' % obj.name)
         text_style = workbook.add_format({'font_size': 10, 'valign': 'vcenter', 'text_wrap': True, 'align': 'center'})
         number_style = workbook.add_format({'num_format': '#,##0', 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'text_wrap': True})
+        tanggal_style = workbook.add_format({'num_format': '#,##0', 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'text_wrap': True})
         text_top_style = workbook.add_format({'font_size': 10, 'bold': True ,'font_color' : 'white', 'bg_color': '#00348A', 'valign': 'vcenter', 'text_wrap': True})
         text_header_style = workbook.add_format({'font_size': 10, 'bold': True ,'font_color' : 'white', 'bg_color': '#00348A', 'valign': 'vcenter', 'text_wrap': True, 'align': 'center'})
+        tanggal_style.set_num_format('d mmm yyyy') 
         
+        #GET OBJECT
         worksheet.write(0, 1, "REPORT MANIFEST", text_top_style)
         worksheet.write(0, 3, obj.ref)
+        
+        #BORDER
+        text_style.set_border(3)
+        number_style.set_border(3)
+        tanggal_style.set_border(3)
+        
+        #SET FIELD
         worksheet.set_column(0, 0, 5)
-        worksheet.set_column(1, 2, 10)#
+        worksheet.set_column(1, 2, 10)
         worksheet.set_column(3, 3, 20)
         worksheet.set_column(4, 16, 10)
         
+        #FIELD MANIFEST
         row = 5
         worksheet.set_column(0, 0, 5)
         worksheet.set_column(1, 9, 15)
@@ -62,17 +64,17 @@ class ReportManifestXlsx(models.AbstractModel):
         for x in obj.manifest_paket_line:
             no_list.append(no)
             title.append(x.title or '')
-            gender.append(x.jenis_kelamin)
+            gender.append(x.partner_id.jenis_kelamin)
             fullname.append(x.nama_passpor)
             tempat_lahir.append(x.tempat_lahir)
-            tanggal_lahir.append(x.tanggal_lahir.strftime('%d-%m-%Y') if x.tanggal_lahir else '')
+            tanggal_lahir.append(x.tanggal_lahir if x.tanggal_lahir else '')
             no_passpor.append(x.no_passpor)
-            passpor_issued.append(x.tanggal_berlaku.strftime('%d-%m-%Y') if x.tanggal_berlaku else '')
-            passpor_expired.append(x.tanggal_habis.strftime('%d-%m-%Y') if x.tanggal_habis else '')
+            passpor_issued.append(x.tanggal_berlaku if x.tanggal_berlaku else '')
+            passpor_expired.append(x.tanggal_habis if x.tanggal_habis else '')
             imigrasi.append(x.imigrasi)
             usia.append(x.umur)
             nik.append(x.ktp)
-            # order.append(x.ref)
+            order.append(x.paket_id.manifest_line.name)
             mahrom.append(x.mahram_id if x.mahram_id else '-')
             room_type.append(x.tipe_kamar)
             alamat.append(x.partner_id.city)
@@ -84,10 +86,10 @@ class ReportManifestXlsx(models.AbstractModel):
         worksheet.write_column(row, 2, gender, text_style)
         worksheet.write_column(row, 3, fullname, text_style)
         worksheet.write_column(row, 4, tempat_lahir, text_style)
-        worksheet.write_column(row, 5, tanggal_lahir, text_style)
+        worksheet.write_column(row, 5, tanggal_lahir, tanggal_style)
         worksheet.write_column(row, 6, no_passpor, number_style)
-        worksheet.write_column(row, 7, passpor_issued, number_style)
-        worksheet.write_column(row, 8, passpor_expired, number_style)
+        worksheet.write_column(row, 7, passpor_issued, tanggal_style)
+        worksheet.write_column(row, 8, passpor_expired, tanggal_style)
         worksheet.write_column(row, 9, imigrasi, text_style)
         worksheet.write_column(row, 10, mahrom, text_style)
         worksheet.write_column(row, 11, usia, text_style)
@@ -98,6 +100,7 @@ class ReportManifestXlsx(models.AbstractModel):
         worksheet.write_column(row, 16, no_room, text_style)
         worksheet.write_column(row, 17, alamat, text_style)
         
+        #FIELD AIRLINE
         bawah = no
         row = 5 + bawah
         worksheet.set_column(0, 0, 5)
@@ -115,7 +118,7 @@ class ReportManifestXlsx(models.AbstractModel):
         for a in obj.airline_line:
             nomer.append(nomr)
             airline.append(a.partner_id.name)
-            departure_date.append(a.tanggal_berangkat.strftime('%d-%m-%Y') if a.tanggal_berangkat else '')
+            departure_date.append(a.tanggal_berangkat if a.tanggal_berangkat else '')
             departure_city.append(a.kota_asal)
             arrival_city.append(a.kota_tujuan)
 
@@ -124,7 +127,7 @@ class ReportManifestXlsx(models.AbstractModel):
         row += 1
         worksheet.write_column(row, 2, nomer, text_style)
         worksheet.write_column(row, 3, airline, text_style)
-        worksheet.write_column(row, 4, departure_date, text_style)
+        worksheet.write_column(row, 4, departure_date, tanggal_style)
         worksheet.write_column(row, 5, departure_city, text_style)
         worksheet.write_column(row, 6, arrival_city, text_style)
 
