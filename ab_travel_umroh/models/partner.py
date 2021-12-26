@@ -3,7 +3,7 @@ from datetime import timedelta, datetime, date
  
 class Partner(models.Model):
     _inherit = 'res.partner'
- 
+    
     # ADDICTIONAL INFORMATION
     ktp = fields.Char(string='No.KTP')
     ayah = fields.Char(string='Nama Ayah')

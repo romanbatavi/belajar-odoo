@@ -13,7 +13,6 @@
 #             'root': '/training_odoo2/training_odoo2',
 #             'objects': http.request.env['training_odoo2.training_odoo2'].search([]),
 #         })
-
 #     @http.route('/training_odoo2/training_odoo2/objects/<model("training_odoo2.training_odoo2"):obj>/', auth='public')
 #     def object(self, obj, **kw):
 #         return http.request.render('training_odoo2.object', {
