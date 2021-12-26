@@ -13,20 +13,23 @@ class ReportManifestXlsx(models.AbstractModel):
         
         worksheet = workbook.add_worksheet('Travel Package %s' % obj.name)
         text_style = workbook.add_format({'font_size': 10, 'valign': 'vcenter', 'text_wrap': True, 'align': 'center'})
+        name_style = workbook.add_format({'font_size': 10, 'valign': 'vcenter', 'text_wrap': True, 'align': 'center'})
         number_style = workbook.add_format({'num_format': '#,##0', 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'text_wrap': True})
         tanggal_style = workbook.add_format({'num_format': '#,##0', 'font_size': 10, 'align': 'center', 'valign': 'vcenter', 'text_wrap': True})
-        text_top_style = workbook.add_format({'font_size': 10, 'bold': True ,'font_color' : 'white', 'bg_color': '#00348A', 'valign': 'vcenter', 'text_wrap': True})
+        text_top_style = workbook.add_format({'font_size': 10, 'bold': True , 'align': 'center', 'font_color' : 'white', 'bg_color': '#00348A', 'valign': 'vcenter', 'text_wrap': True})
         text_header_style = workbook.add_format({'font_size': 10, 'bold': True ,'font_color' : 'white', 'bg_color': '#00348A', 'valign': 'vcenter', 'text_wrap': True, 'align': 'center'})
-        tanggal_style.set_num_format('d mmm yyyy') 
+        tanggal_style.set_num_format('d mmmm yyyy') 
         
         #GET OBJECT
-        worksheet.write(0, 1, "REPORT MANIFEST", text_top_style)
-        worksheet.write(0, 3, obj.ref)
+        worksheet.write(0, 2, "MANIFEST", text_top_style)
+        worksheet.write(0, 3, obj.ref, name_style)
         
         #BORDER
         text_style.set_border(3)
         number_style.set_border(3)
         tanggal_style.set_border(3)
+        text_top_style.set_border(3)
+        name_style.set_border(3)
         
         #SET FIELD
         worksheet.set_column(0, 0, 5)
