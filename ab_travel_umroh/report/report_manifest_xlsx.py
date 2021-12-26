@@ -72,13 +72,10 @@ class ReportManifestXlsx(models.AbstractModel):
             imigrasi.append(x.imigrasi)
             usia.append(x.umur)
             nik.append(x.ktp)
+            # order.append(x.ref)
             mahrom.append(x.mahram_id if x.mahram_id else '-')
             room_type.append(x.tipe_kamar)
-            for j in obj.manifest_line:
-                order.append(j.name or '')
-                alamat.append(j.partner_id.city)
-                # room_leader.insert(j or '-')
-                # no_room.append(j or '-')
+            alamat.append(x.partner_id.city)
             no+=1
             
         row += 1
@@ -100,4 +97,35 @@ class ReportManifestXlsx(models.AbstractModel):
         worksheet.write_column(row, 15, room_leader, text_style)
         worksheet.write_column(row, 16, no_room, text_style)
         worksheet.write_column(row, 17, alamat, text_style)
+        
+        bawah = no
+        row = 5 + bawah
+        worksheet.set_column(0, 0, 5)
+        worksheet.set_column(1, 9, 15)
+        header = ['NO', 'AIRLINE','DEPARTURE DATE' , 'DEPARTURE CITY', 'ARIVAL CITY']
+        worksheet.write_row(row, 2, header, text_header_style)
+
+        nomer = []
+        airline = []
+        departure_date = []
+        departure_city = []
+        arrival_city = []
+
+        nomr = 1
+        for a in obj.airline_line:
+            nomer.append(nomr)
+            airline.append(a.partner_id.name)
+            departure_date.append(a.tanggal_berangkat.strftime('%d-%m-%Y') if a.tanggal_berangkat else '')
+            departure_city.append(a.kota_asal)
+            arrival_city.append(a.kota_tujuan)
+
+            nomr+=1
+    
+        row += 1
+        worksheet.write_column(row, 2, nomer, text_style)
+        worksheet.write_column(row, 3, airline, text_style)
+        worksheet.write_column(row, 4, departure_date, text_style)
+        worksheet.write_column(row, 5, departure_city, text_style)
+        worksheet.write_column(row, 6, arrival_city, text_style)
+
         
