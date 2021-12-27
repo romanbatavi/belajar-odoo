@@ -9,6 +9,7 @@
 8.tidak mendifinisikan ulang action xml yang sama (Done)
 9.untuk posisi direktori folder belum dipindahkan ke folder khusus training (Done)
 ====================YANG KURANG================
+--> belum bikin hak akses admin, jangan pakai odoobot
 --> manggil print jenis_kelamin jangan ngambil value
 
 

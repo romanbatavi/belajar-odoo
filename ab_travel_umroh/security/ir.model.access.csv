@@ -1,1 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_paket_perjalanan,access_paket_perjalanan,model_paket_perjalanan,base.group_user,1,1,1,1
+access_hotel_line,access_hotel_line,model_hotel_line,base.group_user,1,1,1,1
+access_airline_line,access_airline_line,model_airline_line,base.group_user,1,1,1,1
+access_schedule_line,access_schedule_line,model_schedule_line,base.group_user,1,1,1,1
+access_manifest_paket,access_manifest_paket,model_manifest_paket,base.group_user,1,1,1,1
+access_hpp_line,access_hpp_line,model_hpp_line,base.group_user,1,1,1,1
+access_manifest_sale,access_manifest_sale,model_manifest_sale,base.group_user,1,1,1,1

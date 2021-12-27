@@ -117,20 +117,14 @@ class PaketPerjalanan(models.Model):
                 }
                 lines.append((0, 0, vals))
             rec.manifest_paket_line = lines
-        
-class JamaahPackage(models.Model):
-    _name = 'jamaah.package'
-    _inherits = {'res.partner': 'jamaah_id'}
-
-    jamaah_id = fields.Many2one('res.partner', 'Jamaah', required=True, ondelete='cascade')
-
+            
 class HotelLine(models.Model):
     _name = 'hotel.line'
     _description = 'Hotel Line'
     
     partner_id = fields.Many2one('res.partner', string='Nama Hotel', domain=[('hotels', '=', True)])
     paket_id = fields.Many2one('paket.perjalanan', string='Hotel Line')
-    nama_kota = fields.Char(string='Nama Kota', related='partner_id.city', tracking=True,)
+    nama_kota = fields.Char(string='Nama Kota', related='partner_id.city', tracking=True)
     tanggal_masuk = fields.Date(string='Tanggal Masuk')
     tanggal_keluar = fields.Date(string='Tanggal Keluar')
     
@@ -139,7 +133,7 @@ class AirlineLine(models.Model):
     _description = 'Airline Line'
     
     partner_id = fields.Many2one('res.partner', string='Nama Pesawat', domain=[('airlines', '=', True)])
-    paket_id = fields.Many2one('paket.perjalanan', String='Airlines Line')
+    paket_id = fields.Many2one('paket.perjalanan', String='Airline Line')
     tanggal_berangkat = fields.Date(string='Tanggal Keberangkatan')
     kota_asal = fields.Char(string='Kota Asal')
     kota_tujuan = fields.Char(string='Kota Tujuan')

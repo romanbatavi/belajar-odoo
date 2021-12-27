@@ -7,6 +7,7 @@ from xlsxwriter.utility import xl_rowcol_to_cell
 
 class ReportManifestXlsx(models.AbstractModel):
     _name = 'report.ab_travel_umroh.report_manifest_xlsx'
+    _description = 'Report Excel'
     _inherit = 'report.report_xlsx.abstract'
 
     def generate_xlsx_report(self, workbook, data, obj):
