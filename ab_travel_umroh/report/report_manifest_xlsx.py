@@ -80,6 +80,8 @@ class ReportManifestXlsx(models.AbstractModel):
             order.append(x.paket_id.manifest_line.name)
             mahrom.append(x.mahram_id if x.mahram_id else '-')
             room_type.append(x.tipe_kamar)
+            room_leader.append('-')
+            no_room.append('-')
             alamat.append(x.partner_id.city)
             no+=1
             
@@ -105,7 +107,7 @@ class ReportManifestXlsx(models.AbstractModel):
         
         #FIELD AIRLINE
         bawah = no
-        row = 5 + bawah
+        row = 7 + bawah
         worksheet.set_column(0, 0, 5)
         worksheet.set_column(1, 9, 15)
         header = ['NO', 'AIRLINE','DEPARTURE DATE' , 'DEPARTURE CITY', 'ARIVAL CITY']

@@ -12,7 +12,7 @@ class PaketPerjalanan(models.Model):
     bom_id = fields.Many2one('product.product', string="Package",required=True,  tracking=True)
     
     #KUOTA
-    quota = fields.Integer(string='Quota', help='Jumlah Quota', default=0, readonly=True)
+    quota = fields.Integer(string='Quota', help='Jumlah Quota')
     remaining_quota = fields.Integer(related='quota', string='Remaining Quota', store=True)
     quota_progress = fields.Integer(string='Quota Progress', compute='_compute_seats', readonly=True)
     
@@ -161,8 +161,8 @@ class ManifestPaket(models.Model):
     title = fields.Char(string='Title', Required=True, related='partner_id.title.name')
     nama_passpor = fields.Char(string='Nama Passpor', related='partner_id.nama_passpor')
     jenis_kelamin = fields.Selection([
-        ('laki', 'Laki-Laki'), 
-        ('perempuan', 'Perempuan')], 
+        ('Laki-Laki', 'Laki-Laki'), 
+        ('Perempuan', 'Perempuan')], 
         string='Jenis Kelamin', help='Gender', related='partner_id.jenis_kelamin')
     ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
     no_passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')

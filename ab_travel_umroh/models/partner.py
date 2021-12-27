@@ -24,8 +24,8 @@ class Partner(models.Model):
         ('divorced', 'Cerai')], 
         string='Status Pernikahan', help='Status Pernikahan')
     jenis_kelamin = fields.Selection([
-        ('laki', 'Laki-Laki'), 
-        ('perempuan', 'Perempuan')], 
+        ('Laki-Laki', 'Laki-Laki'), 
+        ('Perempuan', 'Perempuan')], 
         string='Jenis Kelamin', help='Gender')
     ibu = fields.Char(string='Nama Ibu')
     pekerjaan_ibu = fields.Char(string='Pekerjaan Ibu')

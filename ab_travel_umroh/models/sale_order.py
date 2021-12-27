@@ -30,8 +30,8 @@ class ManifestSale(models.Model):
     title = fields.Char(string='Title', Required=True, related='partner_id.title.name')
     nama_passpor = fields.Char(string='Nama Passpor', related='partner_id.nama_passpor')
     jenis_kelamin = fields.Selection([
-        ('laki', 'Laki-Laki'), 
-        ('perempuan', 'Perempuan')], 
+        ('Laki-Laki', 'Laki-Laki'), 
+        ('Perempuan', 'Perempuan')], 
         string='Jenis Kelamin',related='partner_id.jenis_kelamin', help='Gender')
     ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
     no_passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
