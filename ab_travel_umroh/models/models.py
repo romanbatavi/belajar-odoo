@@ -6,17 +6,17 @@ class PaketPerjalanan(models.Model):
     _name = 'paket.perjalanan'
     _description = 'Travel Package'
     
-    tanggal_berangkat = fields.Date(string="Tanggal Berangkat", required=True)
-    tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True)
-    product_id = fields.Many2one('product.product', string="Sale", required=True, tracking=True)
-    bom_id = fields.Many2one('product.product', string="Package",required=True,  tracking=True)
+    tanggal_berangkat = fields.Date(string="Tanggal Berangkat",required=True, readonly=True, states={'draft': [('readonly', False)]})
+    tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True, readonly=True, states={'draft': [('readonly', False)]})
+    product_id = fields.Many2one('product.product', string="Sale", readonly=True,required=True, states={'draft': [('readonly', False)]})
+    bom_id = fields.Many2one('product.product', string="Package", readonly=True, required=True, states={'draft': [('readonly', False)]})
     
     #KUOTA
-    quota = fields.Integer(string='Quota', help='Jumlah Quota')
+    quota = fields.Integer(string='Quota', help='Jumlah Quota', readonly=True, states={'draft': [('readonly', False)]})
     remaining_quota = fields.Integer(related='quota', string='Remaining Quota', store=True)
     quota_progress = fields.Integer(string='Quota Progress', compute='_compute_seats', readonly=True)
     
-    hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line')
+    hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line',readonly=True, states={'draft': [('readonly', False)]})
     airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line') 
     schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line')
     hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
@@ -25,9 +25,14 @@ class PaketPerjalanan(models.Model):
     manifest_line = fields.One2many('sale.order', 'paket_id', string='Penghubung Antar Manifest')
     
     #REF
-    name = fields.Char(compute='_compute_name', string='')
-    ref = fields.Char(string='Referensi', readonly=True, default='-')
+    name = fields.Char(string='Referensi', readonly=True, default='-')
     total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
+    
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirm', 'Confirm'),
+        ('done', 'Done')],
+        string='Status', readonly=True, default='draft')
     
     @api.depends('quota','manifest_paket_line')
     def _compute_seats(self):
@@ -60,22 +65,19 @@ class PaketPerjalanan(models.Model):
             for line in record.hpp_line: 
                 total += line.hpp_total
             record.total_cost = total
-    
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('confirm', 'Confirm'),
-        ('done', 'Done')],
-        string='Status', readonly=True, default='draft')
+            
+    def name_get(self):
+        listget = []
+        for record in self:
+            name = (record.name)+' - '+(record.product_id.name)
+            listget.append((record.id, name))
+        return listget
+            
     
     @api.model
     def create(self, vals):
-        vals['ref'] = self.env['ir.sequence'].next_by_code('paket.perjalanan')
+        vals['name'] = self.env['ir.sequence'].next_by_code('paket.perjalanan')
         return super(PaketPerjalanan, self).create(vals)
-    
-    @api.depends('ref','product_id')
-    def _compute_name(self):
-        for rec in self:
-            rec.name = str(rec.ref) +" - "+ str(rec.product_id.name)
     
     def action_draft(self):
         self.write({'state': 'draft'})
@@ -92,37 +94,38 @@ class PaketPerjalanan(models.Model):
     def action_report_excel(self):
         template_report = 'ab_travel_umroh.report_manifest_xlsx'
         return self.env.ref(template_report).report_action(self)
-        
-    @api.onchange('manifest_line')
+    
     def action_update(self):
         for rec in self:
             lines = [(5, 0, 0)]
-            for line in self.manifest_line.manifest_sale_line:
-                print("======================", self.manifest_line.partner_id.nama_passpor)
-                vals = {
-                    'partner_id': line.partner_id.id,
-                    'title': line.partner_id.title.name,
-                    'ktp': line.partner_id.ktp,
-                    'nama_passpor': line.partner_id.nama_passpor,
-                    'jenis_kelamin': line.partner_id.jenis_kelamin,
-                    'no_passpor': line.partner_id.no_passpor,
-                    'tanggal_lahir': line.partner_id.tanggal_lahir,
-                    'tempat_lahir': line.partner_id.tempat_lahir,
-                    'tanggal_berlaku': line.partner_id.tanggal_berlaku,
-                    'tanggal_habis': line.partner_id.tanggal_habis,
-                    'imigrasi': line.partner_id.imigrasi,
-                    'umur': line.partner_id.umur,
-                    'tipe_kamar': line.tipe_kamar,
-                    'mahram_id': line.mahram_id.name
-                }
-                lines.append((0, 0, vals))
-            rec.manifest_paket_line = lines
+            asd =  self.env['sale.order'].search([('paket_id', '=', self.id),('state', '=', 'sale')])
+            for x in asd:
+                for a in x.manifest_sale_line:
+                    vals = {
+                        'partner_id': a.partner_id.id,
+                        'title': a.partner_id.title.name,
+                        'ktp': a.partner_id.ktp,
+                        'nama_passpor': a.partner_id.nama_passpor,
+                        'jenis_kelamin': a.partner_id.jenis_kelamin,
+                        'no_passpor': a.partner_id.no_passpor,
+                        'tanggal_lahir': a.partner_id.tanggal_lahir,
+                        'tempat_lahir': a.partner_id.tempat_lahir,
+                        'tanggal_berlaku': a.partner_id.tanggal_berlaku,
+                        'tanggal_habis': a.partner_id.tanggal_habis,
+                        'imigrasi': a.partner_id.imigrasi,
+                        'umur': a.partner_id.umur,
+                        'tipe_kamar': a.tipe_kamar,
+                        'order_id': a.id,
+                        'mahram_id': a.mahram_id.id
+                    }
+                    lines.append((0, 0, vals))
+                rec.manifest_paket_line = lines
             
 class HotelLine(models.Model):
     _name = 'hotel.line'
     _description = 'Hotel Line'
     
-    partner_id = fields.Many2one('res.partner', string='Nama Hotel', domain=[('hotels', '=', True)])
+    partner_id = fields.Many2one('res.partner', required=True, string='Nama Hotel', domain=[('hotels', '=', True)])
     paket_id = fields.Many2one('paket.perjalanan', string='Hotel Line')
     nama_kota = fields.Char(string='Nama Kota', related='partner_id.city', tracking=True)
     tanggal_masuk = fields.Date(string='Tanggal Masuk')
@@ -132,7 +135,7 @@ class AirlineLine(models.Model):
     _name = 'airline.line'
     _description = 'Airline Line'
     
-    partner_id = fields.Many2one('res.partner', string='Nama Pesawat', domain=[('airlines', '=', True)])
+    partner_id = fields.Many2one('res.partner', required=True, string='Nama Pesawat', domain=[('airlines', '=', True)])
     paket_id = fields.Many2one('paket.perjalanan', String='Airline Line')
     tanggal_berangkat = fields.Date(string='Tanggal Keberangkatan')
     kota_asal = fields.Char(string='Kota Asal')
@@ -142,7 +145,7 @@ class ScheduleLine(models.Model):
     _name = 'schedule.line'
     _description = 'Schedule Line'
     
-    schedule = fields.Char(string='Nama Kegiatan')
+    schedule = fields.Char(string='Nama Kegiatan',required=True)
     paket_id = fields.Many2one('paket.perjalanan', string='Hotel Line')
     tanggal_kegiatan = fields.Date(string='Tanggal Kegiatan')
     
@@ -150,13 +153,14 @@ class ManifestPaket(models.Model):
     _name = 'manifest.paket'
     _description = 'Manifest Paket'
     
-    paket_id = fields.Many2one('paket.perjalanan', string='Manifest Paket')
+    paket_id = fields.Many2one('paket.perjalanan', required=True, string='Manifest Paket')
+    order_id = fields.Many2one('sale.order', required=True, string='Manifest Paket')
     partner_id = fields.Many2one('res.partner', string='Nama Jamaah')
-    title = fields.Char(string='Title', Required=True, related='partner_id.title.name')
+    title = fields.Char(string='Title', required=True, related='partner_id.title.name')
     nama_passpor = fields.Char(string='Nama Passpor', related='partner_id.nama_passpor')
     jenis_kelamin = fields.Selection([
         ('Laki-Laki', 'Laki-Laki'), 
-        ('Perempuan', 'Perempuan')], 
+        ('perempuan', 'Perempuan')], 
         string='Jenis Kelamin', help='Gender', related='partner_id.jenis_kelamin')
     ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
     no_passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')

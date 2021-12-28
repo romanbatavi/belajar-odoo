@@ -24,6 +24,7 @@
 
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/sequence_data.xml',
         'views/paket_produk_views.xml',
@@ -31,7 +32,7 @@
         'views/airlines_views.xml',
         'views/hotels_views.xml',
         'views/travel_package_views.xml',
-        'views/customer_invoice_views.xml',
+        # 'views/customer_invoice_views.xml',
         'views/sales_order_views.xml',
         'views/menu_item_views.xml',
         'report/report_action.xml',

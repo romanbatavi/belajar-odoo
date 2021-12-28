@@ -8,11 +8,11 @@
 7.format css dalam xml sebaiknya dihapus (Done)
 8.tidak mendifinisikan ulang action xml yang sama (Done)
 9.untuk posisi direktori folder belum dipindahkan ke folder khusus training (Done)
+10.belum bikin hak akses admin, jangan pakai odoobot (Done)
+11.print excel belum dinamis pada table airline (Done)
+12.method name_get (Done)
 ====================YANG KURANG================
---> belum bikin hak akses admin, jangan pakai odoobot
---> manggil print jenis_kelamin jangan ngambil value
-
-
+--> belum buat state untuk quotation
 
 ===============================================
 python3 ~/odoo/odoo-14.0/odoo-bin -c ~/odoo/conf/odoo.conf -d TRAINING -u training_odoo2 --dev=reload,xml,werkzeug
@@ -29,4 +29,85 @@ kill -9
         # for hote in self.hotels_line:
         #     print('===============================================================',hote.hotels_id.city)
 
+
+        <record id="report_sale_order_pdf" model="ir.actions.report">
+            <field name="name">Report Sale Order</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">ab_travel_umroh.report_sale_order</field>
+            <field name="report_file">ab_travel_umroh.report_sale_order</field>
+            <field name="print_report_name">'Delivery Order - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_stock_picking"/>
+            <field name="binding_view_types">form</field>
+        </record>
 ===========================================================================================
+<p style="text-align: center;"><strong>DELIVERY ORDER</strong></p>
+<table style="width: 100%; border-collapse: collapse; border-style: none; height: 55px;" border="1">
+<tbody>
+<tr style="height: 24px;">
+<td style="width: 25%; height: 18px;"><strong>Costumer</strong></td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+<td style="width: 25%; height: 18px;"><strong>No</strong></td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+</tr>
+<tr style="height: 24px;">
+<td style="width: 25%; height: 19px;"><strong>Address</strong></td>
+<td style="width: 25%; height: 19px;">&nbsp;</td>
+<td style="width: 25%; height: 19px;"><strong>Tanggal</strong></td>
+<td style="width: 25%; height: 19px;">&nbsp;</td>
+</tr>
+<tr style="height: 24px;">
+<td style="width: 25%; height: 18px;"><strong>Mobile</strong></td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: center;">&nbsp;</p>
+<table style="width: 100%; border-collapse: collapse; border-style: none; height: 55px;" border="1">
+<tbody>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; text-align: center; height: 18px;"><strong>Product</strong></td>
+<td style="width: 33.3333%; text-align: center; height: 18px;"><strong>QTY</strong></td>
+<td style="width: 33.3333%; text-align: center; height: 18px;"><strong>Unit of Measure</strong></td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="height: 120px; width: 79.3145%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+<tbody>
+<tr>
+<td style="width: 100%;">
+<p style="text-align: center;"><strong>Mengetahui</strong></p>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;"><strong>Mitchelle Admin</strong></p>
+</td>
+</tr>
+</tbody>
+</table>
+================================================================================
+  def name_get(self):
+        listget = []
+        for record in self:
+            name = (record.name or '')+'-'+(record.product_id.name or '')
+            print('=========================',name)
+            listget.append((record.id, name))
+        print('==========',listget)
+        return listget

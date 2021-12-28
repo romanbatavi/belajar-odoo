@@ -23,7 +23,7 @@ class ReportManifestXlsx(models.AbstractModel):
         
         #GET OBJECT
         worksheet.write(0, 2, "MANIFEST", text_top_style)
-        worksheet.write(0, 3, obj.ref, name_style)
+        worksheet.write(0, 3, obj.name, name_style)
         
         #BORDER
         text_style.set_border(3)
@@ -78,8 +78,8 @@ class ReportManifestXlsx(models.AbstractModel):
             imigrasi.append(x.imigrasi)
             usia.append(x.umur)
             nik.append(x.ktp)
-            order.append(x.paket_id.manifest_line.name)
-            mahrom.append(x.mahram_id if x.mahram_id else '-')
+            order.append(x.order_id.name)
+            mahrom.append(x.mahram_id.name if x.mahram_id else '-')
             room_type.append(x.tipe_kamar)
             room_leader.append('-')
             no_room.append('-')
@@ -127,7 +127,6 @@ class ReportManifestXlsx(models.AbstractModel):
             departure_date.append(a.tanggal_berangkat if a.tanggal_berangkat else '')
             departure_city.append(a.kota_asal)
             arrival_city.append(a.kota_tujuan)
-
             nomr+=1
     
         row += 1

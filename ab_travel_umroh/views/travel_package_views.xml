@@ -5,12 +5,14 @@
             <field name="model">paket.perjalanan</field>
             <field name="arch" type="xml">
                 <tree string="">
+                    <field name="name"/>
                     <field name="tanggal_berangkat" required="True"/>
                     <field name="tanggal_kembali" required="True"/>
                     <field name="product_id"/>
                     <field name="bom_id"/>
                     <field name="quota" widget="progressbar" optional="hide"/>
                     <field name="remaining_quota"/>
+                    <field name="state"/>
                 </tree>
             </field>
         </record>
@@ -32,7 +34,7 @@
                     <sheet>
                         <div class="oe_title">
                             <h1>
-                                <field name="ref"/>
+                                <field name="name"/>
                             </h1>
                         </div>
                         <group string ="Informasi Jadwal" col="4">

@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <record id="print_stock_picking_view_button" model="ir.ui.view">
+            <field name="name">print.stock.picking.view.button</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="base.view_stock_picking_button"/>
+            <field name="arch" type="xml">
+                <xpath expr=" " position="after"/>
+            </field>
+        </record>
+    </data>
+</odoo>

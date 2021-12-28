@@ -6,7 +6,6 @@ class SaleOrder(models.Model):
     paket_id = fields.Many2one('paket.perjalanan', string='Paket Perjalanan', domain=[('state', '=', 'confirm')])
     manifest_sale_line = fields.One2many('manifest.sale', 'sale_id', string='')
     
-    
     @api.onchange('paket_id')
     def _onchange_paket_id(self):
         for rec in self:
@@ -31,7 +30,7 @@ class ManifestSale(models.Model):
     nama_passpor = fields.Char(string='Nama Passpor', related='partner_id.nama_passpor')
     jenis_kelamin = fields.Selection([
         ('Laki-Laki', 'Laki-Laki'), 
-        ('Perempuan', 'Perempuan')], 
+        ('perempuan', 'Perempuan')], 
         string='Jenis Kelamin',related='partner_id.jenis_kelamin', help='Gender')
     ktp = fields.Char(string='No.KTP', related='partner_id.ktp')
     no_passpor = fields.Char(string='No.Passpor', related='partner_id.no_passpor')
