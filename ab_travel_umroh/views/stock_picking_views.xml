@@ -3,9 +3,11 @@
         <record id="print_stock_picking_view_button" model="ir.ui.view">
             <field name="name">print.stock.picking.view.button</field>
             <field name="model">stock.picking</field>
-            <field name="inherit_id" ref="base.view_stock_picking_button"/>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="arch" type="xml">
-                <xpath expr=" " position="after"/>
+                <button name="%(stock.action_report_delivery)d" position="before">
+                    <button name="action_stock_print" string="Print Delivery" states="done" class="btn-primary" type="object"/>
+                </button>
             </field>
         </record>
     </data>

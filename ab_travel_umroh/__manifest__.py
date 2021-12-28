@@ -24,8 +24,11 @@
 
     # always loaded
     'data': [
+        'report/report_action.xml',
+        'report/report_delivery_order.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/stock_picking_views.xml',
         'views/sequence_data.xml',
         'views/paket_produk_views.xml',
         'views/jamaah_views.xml',
@@ -35,7 +38,6 @@
         # 'views/customer_invoice_views.xml',
         'views/sales_order_views.xml',
         'views/menu_item_views.xml',
-        'report/report_action.xml',
         
     ],
     # only loaded in demonstration mode

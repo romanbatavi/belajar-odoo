@@ -10,6 +10,17 @@
             <field name="binding_model_id" ref="model_paket_perjalanan"/>
             <field name="binding_view_types">form</field>
         </record>
+
+        <record id="report_delivery_order_action" model="ir.actions.report">
+            <field name="name">Delivery Order</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">ab_travel_umroh.report_delivery</field>
+            <field name="report_file">ab_travel_umroh.report_delivery_order</field>
+            <field name="print_report_name">'Delivery - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_stock_picking"/>
+            <field name="binding_view_types">form</field>
+        </record>
     </data>
 </odoo>
 

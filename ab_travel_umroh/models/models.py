@@ -202,3 +202,10 @@ class HppLine(models.Model):
             hpp.hpp_total = 0
             if hpp.hpp_qty and hpp.hpp_price :
                 hpp.hpp_total = hpp.hpp_qty * hpp.hpp_price
+                
+class StockPicking(models.Model):
+    _inherit = 'stock.picking'
+    _description = 'Report Delivery Order'
+     
+    def action_stock_print(self):
+        return self.env.ref('ab_travel_umroh.report_delivery_order_action').report_action(self)
