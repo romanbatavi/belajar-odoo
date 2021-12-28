@@ -41,67 +41,101 @@ kill -9
             <field name="binding_view_types">form</field>
         </record>
 ===========================================================================================
-<p style="text-align: center;"><strong>DELIVERY ORDER</strong></p>
-<table style="width: 100%; border-collapse: collapse; border-style: none; height: 55px;" border="1">
-<tbody>
-<tr style="height: 24px;">
-<td style="width: 25%; height: 18px;"><strong>Costumer</strong></td>
-<td style="width: 25%; height: 18px;">&nbsp;</td>
-<td style="width: 25%; height: 18px;"><strong>No</strong></td>
-<td style="width: 25%; height: 18px;">&nbsp;</td>
-</tr>
-<tr style="height: 24px;">
-<td style="width: 25%; height: 19px;"><strong>Address</strong></td>
-<td style="width: 25%; height: 19px;">&nbsp;</td>
-<td style="width: 25%; height: 19px;"><strong>Tanggal</strong></td>
-<td style="width: 25%; height: 19px;">&nbsp;</td>
-</tr>
-<tr style="height: 24px;">
-<td style="width: 25%; height: 18px;"><strong>Mobile</strong></td>
-<td style="width: 25%; height: 18px;">&nbsp;</td>
-<td style="width: 25%; height: 18px;">&nbsp;</td>
-<td style="width: 25%; height: 18px;">&nbsp;</td>
-</tr>
-</tbody>
-</table>
-<p style="text-align: center;">&nbsp;</p>
-<table style="width: 100%; border-collapse: collapse; border-style: none; height: 55px;" border="1">
-<tbody>
-<tr style="height: 18px;">
-<td style="width: 33.3333%; text-align: center; height: 18px;"><strong>Product</strong></td>
-<td style="width: 33.3333%; text-align: center; height: 18px;"><strong>QTY</strong></td>
-<td style="width: 33.3333%; text-align: center; height: 18px;"><strong>Unit of Measure</strong></td>
-</tr>
-<tr style="height: 18px;">
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-</tr>
-<tr style="height: 18px;">
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-</tr>
-<tr style="height: 18px;">
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
-</tr>
-</tbody>
-</table>
-<p>&nbsp;</p>
-<table style="height: 120px; width: 79.3145%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
-<tbody>
-<tr>
-<td style="width: 100%;">
-<p style="text-align: center;"><strong>Mengetahui</strong></p>
-<p style="text-align: center;">&nbsp;</p>
-<p style="text-align: center;">&nbsp;</p>
-<p style="text-align: center;"><strong>Mitchelle Admin</strong></p>
-</td>
-</tr>
-</tbody>
-</table>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <p style="text-align: center;">
+                        <strong>DELIVERY ORDER</strong>
+                    </p>
+                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse; border-style: none; height: 55px;" border="1">
+                        <tbody>
+                            <tr style="height: 60px;">
+                                <td style="width: 25%; height: 18px;">
+                                    <strong>Costumer</strong>
+                                </td>
+                                <td style="width: 25%; height: 18px;"></td>
+                                <td style="width: 25%; height: 18px;">
+                                    <strong>No</strong>
+                                </td>
+                                <td style="width: 25%; height: 18px;"></td>
+                            </tr>
+                            <tr style="height: 60px;">
+                                <td style="width: 25%; height: 19px;">
+                                    <strong>Address</strong>
+                                </td>
+                                <td style="width: 25%; height: 19px;"></td>
+                                <td style="width: 25%; height: 19px;">
+                                    <strong>Tanggal</strong>
+                                </td>
+                                <td style="width: 25%; height: 19px;"></td>
+                            </tr>
+                            <tr style="height: 60px;">
+                                <td style="width: 25%; height: 18px;">
+                                    <strong>Mobile</strong>
+                                </td>
+                                <td style="width: 25%; height: 18px;"></td>
+                                <td style="width: 25%; height: 18px;"></td>
+                                <td style="width: 25%; height: 18px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="text-align: center;"></p>
+                    <table class="table table-bordered" style="width: 100%; border-collapse: collapse; border-style: none; height: 55px;" border="1">
+                        <tbody>
+                            <tr style="height: 60px;">
+                                <td style="width: 33.3333%; text-align: center; height: 18px;">
+                                    <strong>Product</strong>
+                                </td>
+                                <td style="width: 33.3333%; text-align: center; height: 18px;">
+                                    <strong>QTY</strong>
+                                </td>
+                                <td style="width: 33.3333%; text-align: center; height: 18px;">
+                                    <strong>Unit of Measure</strong>
+                                </td>
+                            </tr>
+                            <tr style="height: 60px;">
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                            </tr>
+                            <tr style="height: 60px;">
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                            </tr>
+                            <tr style="height: 60px;">
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                                <td style="width: 33.3333%; height: 18px;"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p></p>
+                    <table class="table table-bordered" style="height: 200px; width: 79.3145%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+                        <tbody>
+                            <tr>
+                                <td style="width: 100%;">
+                                    <p style="text-align: center;">
+                                        <strong>Mengetahui</strong>
+                                    </p>
+                                    <p style="text-align: center;"></p>
+                                    <p style="text-align: center;"></p>
+                                    <p style="text-align: center;">
+                                        <strong>Mitchelle Admin</strong>
+                                    </p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
+
 ================================================================================
   def name_get(self):
         listget = []

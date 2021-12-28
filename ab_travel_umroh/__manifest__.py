@@ -7,7 +7,7 @@
         subtitle on modules listing or apps.openerp.com""",
 
     'description': """
-        Long description of module's purpose
+        Modul yang dibuat untuk memenuhi tugas Bootcamp di PT.Ismata Nusantara Abadi
     """,
 
     'author': "PT.Ismata Nusantara Abadi",
