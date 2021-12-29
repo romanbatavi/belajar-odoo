@@ -21,6 +21,17 @@
             <field name="binding_model_id" ref="model_stock_picking"/>
             <field name="binding_view_types">form</field>
         </record>
+
+        <record id="report_invoice_print" model="ir.actions.report">
+            <field name="name">Invoice</field>
+            <field name="model">account.move</field>
+            <field name="report_type">qweb-html</field>
+            <field name="report_name">ab_travel_umroh.report_invoice</field>
+            <field name="report_file">ab_travel_umroh.report_invoice_move</field>
+            <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_account_move"/>
+            <field name="binding_view_types">form</field>
+        </record>
     </data>
 </odoo>
 

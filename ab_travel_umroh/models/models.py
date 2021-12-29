@@ -209,3 +209,9 @@ class StockPicking(models.Model):
      
     def action_stock_print(self):
         return self.env.ref('ab_travel_umroh.report_delivery_order_action').report_action(self)
+class StockPicking(models.Model):
+    _inherit = 'account.move'
+    _description = 'Report Invoice'
+     
+    def action_stock_print(self):
+        return self.env.ref('ab_travel_umroh.report_invoice_print').report_action(self)

@@ -41,6 +41,18 @@ kill -9
             <field name="binding_model_id" ref="model_stock_picking"/>
             <field name="binding_view_types">form</field>
         </record>
+
+
+    <record id="report_account_move_print" model="ir.actions.report">
+        <field name="name">Invoice (PDF)</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">ab_travel_umroh.account_move</field>
+        <field name="report_file">ab_travel_umroh.account_move_print</field>
+        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_view_types">form</field>
+    </record>
 ===========================================================================================
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
@@ -146,3 +158,84 @@ kill -9
             listget.append((record.id, name))
         print('==========',listget)
         return listget
+===================================================================================
+
+<p style="text-align: center;"><strong>CUSTOMER INVOICE</strong></p>
+<table style="height: 54px; width: 100%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+<tbody>
+<tr style="height: 18px;">
+<td style="width: 25%; height: 18px;">Customer</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+<td style="width: 25%; height: 18px;">No</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 25%; height: 18px;">Address</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+<td style="width: 25%; height: 18px;">Tanggal</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 25%; height: 18px;">Mobile</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+<td style="width: 25%; height: 18px;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p style="text-align: center;">&nbsp;</p>
+<table style="width: 100%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+<tbody>
+<tr>
+<td style="width: 25%; text-align: center;"><strong>Product</strong></td>
+<td style="width: 25%; text-align: center;"><strong>QTY</strong></td>
+<td style="width: 25%; text-align: center;"><strong>Price Unit</strong></td>
+<td style="width: 25%; text-align: center;"><strong>Sub Total</strong></td>
+</tr>
+<tr>
+<td style="width: 25%;">&nbsp;</td>
+<td style="width: 25%;">&nbsp;</td>
+<td style="width: 25%;">&nbsp;</td>
+<td style="width: 25%;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="height: 72px; width: 100%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+<tbody>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; text-align: center; height: 18px;"><strong>PAYMENT</strong></td>
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px;">&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; height: 18px; text-align: center;"><strong>Method</strong></td>
+<td style="width: 33.3333%; height: 18px; text-align: center;"><strong>Tanggal</strong></td>
+<td style="width: 33.3333%; height: 18px; text-align: center;"><strong>Amount</strong></td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; height: 18px; text-align: center;">Cash</td>
+<td style="width: 33.3333%; height: 18px; text-align: center;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px; text-align: center;">&nbsp;</td>
+</tr>
+<tr style="height: 18px;">
+<td style="width: 33.3333%; height: 18px; text-align: center;">Bank</td>
+<td style="width: 33.3333%; height: 18px; text-align: center;">&nbsp;</td>
+<td style="width: 33.3333%; height: 18px; text-align: center;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp;</p>
+<table style="height: 145px; width: 41.3306%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+<tbody>
+<tr>
+<td style="width: 100%;">
+<p style="text-align: center;">Finance</p>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;">&nbsp;</p>
+<p style="text-align: center;">&nbsp;</p>
+</td>
+</tr>
+</tbody>
+</table>
