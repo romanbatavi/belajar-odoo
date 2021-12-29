@@ -6,35 +6,8 @@ from datetime import timedelta, datetime, date
 class PaketPerjalanan(models.Model):
     _name = 'paket.perjalanan'
     _description = 'Travel Package'
-    
-    tanggal_berangkat = fields.Date(string="Tanggal Berangkat",required=True, readonly=True, states={'draft': [('readonly', False)]})
-    tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True, readonly=True, states={'draft': [('readonly', False)]})
-    product_id = fields.Many2one('product.product', string="Sale", readonly=True,required=True, states={'draft': [('readonly', False)]})
-    bom_id = fields.Many2one('product.product', string="Package", readonly=True, required=True, states={'draft': [('readonly', False)]})
-    
-    #KUOTA
-    quota = fields.Integer(string='Quota', help='Jumlah Quota', readonly=True, states={'draft': [('readonly', False)]})
-    remaining_quota = fields.Integer(related='quota', string='Remaining Quota', store=True)
-    quota_progress = fields.Integer(string='Quota Progress', compute='_compute_seats', readonly=True)
-    
-    hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line',readonly=True, states={'draft': [('readonly', False)]})
-    airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line') 
-    schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line')
-    hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
-    manifest_paket_line = fields.One2many('manifest.paket', 'paket_id', string='Manifest Line', readonly=True)
-    
-    manifest_line = fields.One2many('sale.order', 'paket_id', string='Penghubung Antar Manifest')
-    
-    #REF
-    name = fields.Char(string='Referensi', readonly=True, default='-')
-    total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
-    
-    state = fields.Selection([
-        ('draft', 'Draft'),
-        ('confirm', 'Confirm'),
-        ('done', 'Done')],
-        string='Status', readonly=True, default='draft')
-    
+
+    #COMPUTE KUOTA
     @api.depends('quota','manifest_paket_line')
     def _compute_seats(self):
         for rec in self:
@@ -42,6 +15,46 @@ class PaketPerjalanan(models.Model):
             if rec.manifest_paket_line and rec.quota:
                 rec.remaining_quota = rec.quota - len(rec.manifest_paket_line)
                 rec.quota_progress = 100 * len(rec.manifest_paket_line) / rec.quota
+                
+    #COMPUTE HPPLINE
+    @api.depends('hpp_line')
+    def _compute_total_cost(self):
+        for record in self:
+            total = 0
+            for line in record.hpp_line: 
+                total += line.hpp_total
+            record.total_cost = total
+
+    #ISIAN PAKET PERJALANAN
+    product_id = fields.Many2one('product.product', string="Sale", readonly=True,required=True, states={'draft': [('readonly', False)]})
+    bom_id = fields.Many2one('product.product', string="Package", readonly=True, required=True, states={'draft': [('readonly', False)]})
+    tanggal_berangkat = fields.Date(string="Tanggal Berangkat",required=True, readonly=True, states={'draft': [('readonly', False)]})
+    tanggal_kembali = fields.Date(string="Tanggal Kembali", required=True, readonly=True, states={'draft': [('readonly', False)]})
+    
+    #NOTEBOOK
+    hotel_line = fields.One2many('hotel.line', 'paket_id', string='Hotel Line',readonly=True, states={'draft': [('readonly', False)]})
+    airline_line = fields.One2many('airline.line', 'paket_id', string='Airline Line') 
+    schedule_line = fields.One2many('schedule.line', 'paket_id', string='Schedule Line')
+    hpp_line = fields.One2many('hpp.line', 'paket_id', string='HPP Line') 
+    manifest_paket_line = fields.One2many('manifest.paket', 'paket_id', string='Manifest Line', readonly=True)
+    
+    #KUOTA
+    quota = fields.Integer(string='Quota', help='Jumlah Quota', readonly=True, states={'draft': [('readonly', False)]})
+    remaining_quota = fields.Integer(related='quota', string='Remaining Quota', store=True)
+    quota_progress = fields.Integer(string='Quota Progress', compute='_compute_seats', readonly=True)
+    
+    #REF
+    name = fields.Char(string='Referensi', readonly=True, default='-')
+    
+    #COMPUTE TOTAL COST
+    total_cost = fields.Float(string='Total cost' , readonly=True ,store=True, compute='_compute_total_cost')
+    
+    #STATE
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirm', 'Confirm'),
+        ('done', 'Done')],
+        string='Status', readonly=True, default='draft')
     
     #ONCHANGE HPP
     @api.onchange('bom_id')
@@ -59,14 +72,7 @@ class PaketPerjalanan(models.Model):
                 lines.append((0, 0, vals))
             rec.hpp_line = lines
             
-    @api.depends('hpp_line')
-    def _compute_total_cost(self):
-        for record in self:
-            total = 0
-            for line in record.hpp_line: 
-                total += line.hpp_total
-            record.total_cost = total
-            
+    #REF NAME + PRODUCT
     def name_get(self):
         listget = []
         for record in self:
@@ -74,12 +80,12 @@ class PaketPerjalanan(models.Model):
             listget.append((record.id, name))
         return listget
             
-    
     @api.model
     def create(self, vals):
         vals['name'] = self.env['ir.sequence'].next_by_code('paket.perjalanan')
         return super(PaketPerjalanan, self).create(vals)
     
+    #STATE CONDITION
     def action_draft(self):
         self.write({'state': 'draft'})
         
@@ -92,10 +98,12 @@ class PaketPerjalanan(models.Model):
     def action_update(self):
         self.write({'state': 'confirm'})
     
+    #ACTION REPORT EXCEL
     def action_report_excel(self):
         template_report = 'ab_travel_umroh.report_manifest_xlsx'
         return self.env.ref(template_report).report_action(self)
     
+    #UPDATE JAMAAH + STATE FIXED
     def action_update(self):
         for rec in self:
             lines = [(5, 0, 0)]
@@ -146,8 +154,8 @@ class ScheduleLine(models.Model):
     _name = 'schedule.line'
     _description = 'Schedule Line'
     
-    schedule = fields.Char(string='Nama Kegiatan',required=True)
     paket_id = fields.Many2one('paket.perjalanan', string='Hotel Line')
+    schedule = fields.Char(string='Nama Kegiatan',required=True)
     tanggal_kegiatan = fields.Date(string='Tanggal Kegiatan')
     
 class ManifestPaket(models.Model):
@@ -190,9 +198,9 @@ class HppLine(models.Model):
     
     paket_id = fields.Many2one('paket.perjalanan', string='HPP ID')
     mrp_id = fields.Many2one('mrp.bom', string='Barang')
+    uom_id = fields.Many2one('uom.uom', string='Unit(s)')
     hpp_barang = fields.Char(string='Nama Barang')
     hpp_qty = fields.Float(string='Quantity')
-    uom_id = fields.Many2one('uom.uom', string='Unit(s)')
     hpp_price = fields.Float(string='Unit Price')
     hpp_total = fields.Float(string='Sub Total', compute='_compute_total_cost')
     
@@ -206,13 +214,14 @@ class HppLine(models.Model):
                 
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
-    _description = 'Report Delivery Order'
+    _description = 'Stock Picking'
      
     def action_stock_print(self):
         return self.env.ref('ab_travel_umroh.report_delivery_order_action').report_action(self)
+    
 class AccountMove(models.Model):
     _inherit = 'account.move'
-    _description = 'Report Invoice'
+    _description = 'Account Move'
      
     def action_stock_print(self):
         return self.env.ref('ab_travel_umroh.report_invoice_print').report_action(self)

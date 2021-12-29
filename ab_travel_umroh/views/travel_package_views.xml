@@ -17,7 +17,7 @@
             </field>
         </record>
 
-        <!-- TRAVEL PACKAGE -->
+        <!-- PAKET PERJALANAN -->
         <record id="paket_perjalanan_view_form" model="ir.ui.view">
             <field name="name">paket.perjalanan.form</field>
             <field name="model">paket.perjalanan</field>

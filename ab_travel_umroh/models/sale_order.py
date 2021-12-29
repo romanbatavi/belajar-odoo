@@ -6,6 +6,7 @@ class SaleOrder(models.Model):
     paket_id = fields.Many2one('paket.perjalanan', string='Paket Perjalanan', domain=[('state', '=', 'confirm')])
     manifest_sale_line = fields.One2many('manifest.sale', 'sale_id', string='')
     
+    #ONCHANGE SALE ORDER
     @api.onchange('paket_id')
     def _onchange_paket_id(self):
         for rec in self:

@@ -4,6 +4,13 @@ from datetime import timedelta, datetime, date
 class Partner(models.Model):
     _inherit = 'res.partner'
     
+    #COMPUTE TRIGGER UMUR SALE ORDER
+    @api.depends('tanggal_lahir')
+    def _compute_umur(self):
+        today_date = date.today()
+        for usia in self:
+            usia.umur=today_date.year - usia.tanggal_lahir.year
+            
     # ADDICTIONAL INFORMATION
     ktp = fields.Char(string='No.KTP')
     ayah = fields.Char(string='Nama Ayah')
@@ -46,15 +53,7 @@ class Partner(models.Model):
         ('xxxl', 'XXXL'), 
         ('4l', '4L')], 
         string='Ukuran Baju', help='Ukuran Baju')
-    
-    #TRIGGER UMUR SALE ORDER
     umur = fields.Char(compute='_compute_umur' ,string='Umur')
-    
-    @api.depends('tanggal_lahir')
-    def _compute_umur(self):
-        today_date = date.today()
-        for usia in self:
-            usia.umur=today_date.year - usia.tanggal_lahir.year
     
     # PASSPOR INFORMATION
     no_passpor = fields.Char(string='No.Passpor')
