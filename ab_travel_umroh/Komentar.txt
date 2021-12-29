@@ -11,8 +11,9 @@
 10.belum bikin hak akses admin, jangan pakai odoobot (Done)
 11.print excel belum dinamis pada table airline (Done)
 12.method name_get (Done)
+13.belum buat state untuk quotation
 ====================YANG KURANG================
---> belum buat state untuk quotation
+--> clue untuk get user ada di sale.order
 
 ===============================================
 python3 ~/odoo/odoo-14.0/odoo-bin -c ~/odoo/conf/odoo.conf -d TRAINING -u training_odoo2 --dev=reload,xml,werkzeug

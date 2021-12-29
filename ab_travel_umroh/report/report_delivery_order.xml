@@ -89,7 +89,7 @@
                                     <p style="text-align: center;"></p>
                                     <p style="text-align: center;"></p>
                                     <p style="text-align: center;">
-                                        <strong>Mitchelle Admin</strong>
+                                        <t t-esc="o.sale_id.user_id.name"/>
                                     </p>
                                 </td>
                             </tr>
