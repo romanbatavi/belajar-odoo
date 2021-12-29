@@ -12,8 +12,11 @@
 11.print excel belum dinamis pada table airline (Done)
 12.method name_get (Done)
 13.belum buat state untuk quotation
+14.clue untuk get user ada di sale.order (masnov) (Done)
+15.pemanggilan 3 field sisa ada di dictionary link bisa di pelajari : https://stackoverflow.com/questions/47031017/calling-python-function-in-xml-report-odoo-10
+16.angka mata uang pake dollar (Done)
+17.divideo belum dibenerin jika beberapa field masih kosong gabisa input (Done)
 ====================YANG KURANG================
---> clue untuk get user ada di sale.order
 
 ===============================================
 python3 ~/odoo/odoo-14.0/odoo-bin -c ~/odoo/conf/odoo.conf -d TRAINING -u training_odoo2 --dev=reload,xml,werkzeug
@@ -21,38 +24,6 @@ python3 ~/odoo/odoo-14.0/odoo-bin -c ~/odoo/conf/odoo.conf -d TRAINING -u traini
 ps aux | grep odoo
 
 kill -9
-===============================================
-# schedules_id = fields.Many2one('res.partner', string='Nama Hotel', domain=[('hotels', '=', True)])
-
-    # @api.onchange('bom_id')
-    # def _onchange_bom_id(self):
-    #     print('===============================================================',self.bom_id)
-        # for hote in self.hotels_line:
-        #     print('===============================================================',hote.hotels_id.city)
-
-
-        <record id="report_sale_order_pdf" model="ir.actions.report">
-            <field name="name">Report Sale Order</field>
-            <field name="model">stock.picking</field>
-            <field name="report_type">qweb-html</field>
-            <field name="report_name">ab_travel_umroh.report_sale_order</field>
-            <field name="report_file">ab_travel_umroh.report_sale_order</field>
-            <field name="print_report_name">'Delivery Order - %s' % (object.name)</field>
-            <field name="binding_model_id" ref="model_stock_picking"/>
-            <field name="binding_view_types">form</field>
-        </record>
-
-
-    <record id="report_account_move_print" model="ir.actions.report">
-        <field name="name">Invoice (PDF)</field>
-        <field name="model">account.move</field>
-        <field name="report_type">qweb-html</field>
-        <field name="report_name">ab_travel_umroh.account_move</field>
-        <field name="report_file">ab_travel_umroh.account_move_print</field>
-        <field name="print_report_name">'Invoice - %s' % (object.name)</field>
-        <field name="binding_model_id" ref="model_account_move"/>
-        <field name="binding_view_types">form</field>
-    </record>
 ===========================================================================================
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
@@ -239,3 +210,15 @@ kill -9
 </tr>
 </tbody>
 </table>
+
+<t t-esc="o.invoice_payments_widget"/>
+
+udah bikin def, dialam def ada variabel '=' , json nya ada di dalam variabel '=' .
+brace self. manggil .... 
+variabel masukkan di return
+
+journal_name
+amount
+date
+
+<span t-esc="c['journal_name']" />

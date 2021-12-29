@@ -20,16 +20,17 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','stock','mrp','report_xlsx'],
+    'depends': ['base','sale','stock','mrp','report_xlsx','account'],
 
     # always loaded
     'data': [
         'report/report_action.xml',
         'report/report_delivery_order.xml',
+        'report/report_invoice.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
         'views/delivery_order_views.xml',
-        'views/customer_invoice_views.xml',
+        # 'views/customer_invoice_views.xml',
         'views/sequence_data.xml',
         'views/paket_produk_views.xml',
         'views/jamaah_views.xml',

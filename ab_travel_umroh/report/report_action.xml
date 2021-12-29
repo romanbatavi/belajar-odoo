@@ -1,5 +1,6 @@
 <odoo>
     <data>
+        <!-- REPORT EXCEL -->
         <record id="report_manifest_xlsx" model="ir.actions.report">
             <field name="name">Report Manifest Excel (XLSX)</field>
             <field name="model">paket.perjalanan</field>
@@ -11,6 +12,7 @@
             <field name="binding_view_types">form</field>
         </record>
 
+        <!-- REPORT DELIVERY ORDER -->
         <record id="report_delivery_order_action" model="ir.actions.report">
             <field name="name">Delivery Order</field>
             <field name="model">stock.picking</field>
@@ -22,6 +24,7 @@
             <field name="binding_view_types">form</field>
         </record>
 
+        <!-- REPORT INVOICE -->
         <record id="report_invoice_print" model="ir.actions.report">
             <field name="name">Invoice</field>
             <field name="model">account.move</field>

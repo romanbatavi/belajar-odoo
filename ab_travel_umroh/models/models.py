@@ -1,5 +1,6 @@
 
 from typing_extensions import Required
+import json
 from odoo import api, fields, models
 from datetime import timedelta, datetime, date    
 class PaketPerjalanan(models.Model):
@@ -209,9 +210,15 @@ class StockPicking(models.Model):
      
     def action_stock_print(self):
         return self.env.ref('ab_travel_umroh.report_delivery_order_action').report_action(self)
-class StockPicking(models.Model):
+class AccountMove(models.Model):
     _inherit = 'account.move'
     _description = 'Report Invoice'
      
     def action_stock_print(self):
         return self.env.ref('ab_travel_umroh.report_invoice_print').report_action(self)
+    
+    def get_data(self):
+        a = json.loads(self.invoice_payments_widget)
+        if a:
+            return  a['content']
+        return

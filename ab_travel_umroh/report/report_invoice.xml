@@ -1,0 +1,138 @@
+<odoo>
+    <template id="report_invoice">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <p style="text-align: center;">
+                            <strong>CUSTOMER INVOICE</strong>
+                        </p>
+                        <table class="table table-bordered" style="height: 54px; width: 100%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+                            <tbody>
+                                <tr style="height: 18px;">
+                                    <td style="width: 25%; height: 18px;">Customer</td>
+                                    <td style="width: 25%; height: 18px;">
+                                        <t t-esc="o.partner_id.name"/>
+                                    </td>
+                                    <td style="width: 25%; height: 18px;">No</td>
+                                    <td style="width: 25%; height: 18px;">
+                                        <t t-esc="o.name"/>
+                                    </td>
+                                </tr>
+                                <tr style="height: 18px;">
+                                    <td style="width: 25%; height: 18px;">Address</td>
+                                    <td style="width: 25%; height: 18px;">
+                                        <t t-esc="o.partner_id.city"/>
+                                    </td>
+                                    <td style="width: 25%; height: 18px;">Tanggal</td>
+                                    <td style="width: 25%; height: 18px;">
+                                        <t t-esc="o.invoice_date"/>
+                                    </td>
+                                </tr>
+                                <tr style="height: 18px;">
+                                    <td style="width: 25%; height: 18px;">Mobile</td>
+                                    <td style="width: 25%; height: 18px;">
+                                        <t t-esc="o.partner_id.mobile"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="text-align: center;"></p>
+                        <table class="table table-bordered" style="width: 100%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 25%; text-align: center;">
+                                        <strong>Product</strong>
+                                    </td>
+                                    <td style="width: 25%; text-align: center;">
+                                        <strong>QTY</strong>
+                                    </td>
+                                    <td style="width: 25%; text-align: center;">
+                                        <strong>Price Unit</strong>
+                                    </td>
+                                    <td style="width: 25%; text-align: center;">
+                                        <strong>Sub Total</strong>
+                                    </td>
+                                </tr>
+                                <t t-foreach="o.invoice_line_ids" t-as="b">
+                                    <tr>
+                                        <td style="width: 25%;">
+                                            <t t-esc="b.product_id.name"/>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <t t-esc="b.quantity"/>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <t t-esc="b.price_unit"/>
+                                        </td>
+                                        <td style="width: 25%;">
+                                            <t t-esc="b.price_subtotal"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <p></p>
+                        <table class="table table-bordered" style="height: 72px; width: 100%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+                            <tbody>
+                                <tr style="height: 18px;">
+                                    <td style="width: 33.3333%; text-align: center; height: 18px;" colspan="3">
+                                        <strong>PAYMENT</strong>
+                                    </td>
+                                </tr>
+                                <tr style="height: 18px;">
+                                    <td style="width: 33.3333%; height: 18px; text-align: center;">
+                                        <strong>Method</strong>
+                                    </td>
+                                    <td style="width: 33.3333%; height: 18px; text-align: center;">
+                                        <strong>Tanggal</strong>
+                                    </td>
+                                    <td style="width: 33.3333%; height: 18px; text-align: center;">
+                                        <strong>Amount</strong>
+                                    </td>
+                                </tr>
+                                <t t-foreach="o.get_data()" t-as="c">
+                                    <tr style="height: 18px;">
+                                        <td style="width: 33.3333%; height: 18px; text-align: center;">
+                                            <span t-esc="c['journal_name']" />
+                                        </td>
+                                        <td style="width: 33.3333%; height: 18px; text-align: center;">
+                                            <span t-esc="c['date']" />
+                                        </td>
+                                        <td style="width: 33.3333%; height: 18px; text-align: center;">
+                                            <span t-esc="c['amount']" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                        </td>
+                                    </tr>
+                                </t>
+                                <tr>
+                                    <td style="width: 33.3333%; text-align: right;" colspan="2">
+                                        <strong>Sisa</strong>
+                                    </td>
+                                    <td style="width: 33.3333%; text-align: right;">
+                                        <t t-esc="o.amount_residual" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p></p>
+                        <table class="table table-bordered" style="height: 145px; width: 41.3306%; border-collapse: collapse; margin-left: auto; margin-right: auto;" border="1">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 100%;">
+                                        <p style="text-align: center;">Finance</p>
+                                        <p style="text-align: center;"></p>
+                                        <p style="text-align: center;"></p>
+                                        <p style="text-align: center;"></p>
+                                        <p style="text-align: center;">
+                                            <t t-esc="o.user_id.name"/>
+                                        </p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
